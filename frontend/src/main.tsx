@@ -4,7 +4,7 @@ import App from './components/App';
 import './index.css'; // Global styles
 import './model-viewer.d.ts'; // Type declaration for model-viewer
 import '@google/model-viewer';
-
+import '@mysten/dapp-kit/dist/index.css'; // Sui ConnectModal need this CSS
 
 import {
   SuiClientProvider,
