@@ -68,7 +68,7 @@ const ARPage = () => {
             // === 5. Load the 3D model (GLB file) ===
             const loader = new GLTFLoader();
             loader.load(
-                '/nft-assets/nft.glb', // For production, use HTTPS URL
+                '/nft-assets/nft.glb', 
                 (gltf) => {
                     const model = gltf.scene;
                     model.position.set(0, 0, -2); // Initial position in front of user

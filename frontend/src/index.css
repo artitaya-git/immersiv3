@@ -11,9 +11,28 @@ section h2 {
     background-color: #000000;
 }
 
-@layer utilities {
-    .immersiv3-vr-container canvas {
-    @apply absolute top-0 left-0 w-full h-full;
-    }
+.immersiv3-vr-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
+@layer utilities {
+    .wallet-connect-btn {
+        @apply border border-[var(--text-color)] rounded-md px-3 py-1.5 transition-all hover:bg-[var(--text-color)] hover:text-[var(--bg-color)];
+    }
+
+/* Reduce size on mobile device (<640px) */
+@media (max-width: 640px) {
+    .wallet-connect-btn {
+        transform: scale(0.85);
+        transform-origin: center;
+        min-width: 70px;
+        max-width: 100px;
+        padding: 0.25rem 0.5rem; /* ~4px, 2px */
+        font-size: 12px !important; 
+    }
+}
+}

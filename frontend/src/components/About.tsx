@@ -11,13 +11,9 @@ function About() {
       id="about-section"
       className="pt-36 pb-24 text-center text-[var(--text-color)] px-4"
     >
-      {/* <h2 className="text-5xl md:text-5xl font-bold mb-12 mt-16">About ImmersivΞ</h2> */}
-
       <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-10 mt-16">
         About ImmersivΞ
         </h2>
-
-
 
       <div className="text-lg opacity-80 leading-relaxed max-w-2xl mx-auto text-pretty">
         <p>
@@ -26,7 +22,7 @@ function About() {
           from digital art and immersive education to branded activations.
         </p>
         <p className="mt-8">
-          We began with a 3D NFT gallery on the Sui Blockchain — offering 1111 exclusive work 
+          We began with a 3D NFT gallery on the Sui Blockchain on testnet — offering 1111 exclusive work 
           with AR features during the Sui Overflow 2025 hackathon — as an early exploration 
           of digital ownership and immersive presentation.
         </p>

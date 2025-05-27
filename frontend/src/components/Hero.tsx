@@ -1,23 +1,40 @@
 import { useSignAndExecuteTransaction, useSuiClient, useSuiClientQuery } from '@mysten/dapp-kit';
 import { Transaction } from '@mysten/sui/transactions';
-import { Link, redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; 
+import React, { useState } from 'react';
+import MintedSuccessModal from './MintedSuccessModal'; 
 
-const PACKAGE_ID = `0x8cea9e3b3602ed67c0069ccee5ed13d9c32cf6c2c4068a68fef21fd2b2d204c3`;
-const MINT_STATE_ID = `0xb85f13afab1d6159901e77ecf01e6d4b2ecc92e2996c2150407bec1730768ca2`;
+const PACKAGE_ID = `0x3e1473fb76a629fd4ac4348966f62ee30f93aa9e0da22d965bf8a7f3c02b7f51`;
+const MINT_STATE_ID = `0x5227757e15d23dca4d1114985daef482409a395cf4199754bb6ecaf8badff19c`;
 
-function NumberMinted() {
+interface MintStateFields {
+    minted: number; 
+}
+interface MoveObjectContent {
+    dataType: 'moveObject';
+    fields: MintStateFields;
+    }
+    function NumberMinted() {
     const { data, isLoading, isSuccess } = useSuiClientQuery(
         'getObject',
         {
-            id: MINT_STATE_ID,
-            options: {
-                showContent: true,
-            }
+        id: MINT_STATE_ID,
+        options: {
+            showContent: true,
+        },
         }
     );
+
+    const content = data?.data?.content as MoveObjectContent | undefined;
+
     return (
-        <span className="mt-4 text-sm font-light mb-4">
-            {isLoading ? 'Loading...' : isSuccess ? data.data?.content?.dataType === "moveObject" ? `${data.data.content.fields.minted} / 1111 Minted` : 'something wrong' : 'Error fetching mint data'}
+        <span className="mt-4 text-sm font-light mb-4">    
+            {isLoading
+                ? 'Loading...'
+                : isSuccess && data.data?.content?.dataType === "moveObject"
+                    ? `${(data.data.content.fields as { minted: string }).minted} / 1111 Minted`
+                    : 'something wrong'}
         </span>
         )
 }
@@ -31,17 +48,24 @@ function NumberMinted() {
  */
 function Hero() {
     const { mutate: signAndExecute } = useSignAndExecuteTransaction();
+    const navigate = useNavigate(); 
+
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showMintSuccessModal, setShowMintSuccessModal] = useState(false);
 
     const handleMint = () => {
         console.log('Initiate NFT Mint on Sui Blockchain');
         const tx = new Transaction();
         tx.moveCall({
             package: PACKAGE_ID,
-            module: 'simple_nft',
-            function: 'mint',
+            module: 'nft_minter',
+            function: 'mint_to_sender',
             arguments: [
-                tx.object(MINT_STATE_ID), // The state object ID for minting
-                tx.pure.vector('u8', [...'https://example.com'].map(x => x.charCodeAt(0))), // Replace with actual GLB URL
+                tx.object(MINT_STATE_ID), // shared object
+                tx.pure.vector('u8', [...'Immersiv3 Overflow 2025'].map(x => x.charCodeAt(0))), // name
+                tx.pure.vector('u8', [...'A 3D NFT artwork with AR experience'].map(x => x.charCodeAt(0))), // description
+                tx.pure.vector('u8', [...'https://immersiv3.tech/nft-assets/nft.glb'].map(x => x.charCodeAt(0))), // url            
             ]
         });
         signAndExecute({
@@ -49,9 +73,39 @@ function Hero() {
         }, {
             onSuccess: () => {
                 console.log('Minting transaction successful!');
-                redirect('/minted');
+                setShowMintSuccessModal(true);
+
+            },
+            // onError callback 
+            onError: (error) => {
+                console.error('Minting transaction failed:', error);
+                // Check error if gas is sufficient                
+                let message = 'Transaction failed. Please try again.';
+                if (error.message.includes('Insufficient gas')) { 
+                    message = 'Insufficient gas. Please top up your SUI balance.';
+                } else if (error.message.includes('UserRejected')) {
+                    message = 'Transaction rejected by user.';
+                } else if (error.message.includes('gas budget exceeded')) {
+                    message = 'Gas budget exceeded. Consider increasing the gas budget.';
+                } else {
+                    message = `Error: ${error.message}`;
+                }
+
+                setErrorMessage(message);
+                setShowErrorModal(true); // Show Modal Error
             }
         });
+    };
+
+    // Close Modal
+    const closeErrorModal = () => {
+        setShowErrorModal(false);
+        setErrorMessage('');
+    };
+
+    const closeMintSuccessModal = () => {
+        setShowMintSuccessModal(false);
+        navigate('/gallery');
     };
 
     return (
@@ -84,7 +138,7 @@ function Hero() {
                 <model-viewer
                 className="w-[350px] md:w-[450px] lg:w-[500px] h-[350px] md:h-[450px] lg:h-[500px] 
                 rounded-lg model-viewer-bg mb-5"
-                src="/nft-assets/nft.glb" // "/nft-assets/nft.glb" - LOCAL: dev use only / For production, switch to external Urls
+                src="/nft-assets/nft.glb" 
                 alt="3D NFT"
                 camera-controls
                 auto-rotate
@@ -107,11 +161,7 @@ function Hero() {
             </div>
 
             {/* === 3D Viewer + AR user manual === */}
-            {/* <div className="w-full max-w-md p-4 mx-auto mt-8 2xl:mt-0 2xl:absolute 2xl:right-24 2xl:top-[65%] 2xl:-translate-y-1/2"> */}
-
-            <div className="w-full max-w-md p-4 mx-auto mt-8 2xl:mt-0 2xl:absolute 2xl:right-10 2xl:top-[76%] 2xl:-translate-y-1/2"> 
-
-
+            <div className="w-full max-w-md p-4 mx-auto mt-8 2xl:mt-0 2xl:absolute 2xl:right-10 2xl:top-[76%] 2xl:-translate-y-1/2">
             <div className="bg-[var(--bg-color)] text-[var(--text-color)] rounded-lg shadow-xl border border-white/30 p-4">
                 <h3 className="text-lg font-semibold mb-2">Quick Tips:</h3>
                 <ul className="list-none text-sm space-y-2">
@@ -130,13 +180,18 @@ function Hero() {
                     <span className="text-lg font-semibold block mb-2">AR Compatibility:</span>
                     <ul className="list-none ml-4 space-y-1">
                     <li><span className="font-semibold">Best on:</span> Android (Chrome, etc.)</li>
-                    <li><span className="font-semibold">NOT Supported:</span> Desktop, iPhone browsers.</li>
+                    <li><span className="font-semibold">NOT Supported:</span> Desktop, iPhone.</li>
                     </ul>
                 </li>
                 </ul>
             </div>
             </div>
         </div>
+
+            <MintedSuccessModal 
+                show={showMintSuccessModal}
+                onClose={closeMintSuccessModal}
+            />
         </section>
     );
 }

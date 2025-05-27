@@ -87,19 +87,21 @@ function Navbar({ isLanding, setPage, setShowZkLogin }: NavbarProps) {
                 {isDark ? '☀️' : '🌙'}
                 </button>
 
-                {/* === Use address from useCurrentAccount() === */}
-                <ConnectButton
-                className="connect-btn px-2 py-1 text-xs md:px-3 md:py-1.5 md:text-sm lg:px-4 lg:py-2 lg:text-base border border-[var(--text-color)] rounded-md hover:bg-[var(--text-color)] hover:text-[var(--bg-color)]"
+                {/* === Wallet Connect Button === */}
+                    <ConnectButton
                             connectText="Connect Wallet"
-                />
-                {address && (
-                <span className="text-sm">
-                    Connected: {address.slice(0, 6)}...{address.slice(-4)}
-                </span>
-                )}
+                            className="wallet-connect-btn text-xs sm:text-sm font-medium min-w-[80px] max-w-[120px] sm:min-w-[120px] sm:max-w-[160px] truncate"
+                        />
+
+                        {/* === Show Address if Connected === */}
+                        {address && (
+                            <span className="text-[0.75rem] sm:text-xs truncate max-w-[100px] sm:max-w-[140px]">
+                                {address.slice(0, 6)}...{address.slice(-4)}
+                            </span>
+                        )}
 
                 {/* === ZkLogin === */}
-                <button
+                {/* <button
                 onClick={() => {
                     console.log('Clicked Google Login, calling setShowZkLogin(true)');
                     setShowZkLogin(true);
@@ -110,10 +112,13 @@ function Navbar({ isLanding, setPage, setShowZkLogin }: NavbarProps) {
                 hover:bg-[var(--text-color)] hover:text-[var(--bg-color)]"
                 >
                 Google Login
-                </button>
+                </button> */}
+
             </>
             )}
         </div>
+
+        {/* === Audio === */}
         {isLanding && (
             <audio
             ref={audioRef}

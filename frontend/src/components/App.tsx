@@ -3,7 +3,7 @@ import { useState } from 'react';
 import LandingPage from './LandingPage';
 import GalleryPage from './GalleryPage';
 import PortalPage from './PortalPage';
-import MintedPage from './MintedPage';
+// import MintedPage from './MintedPage';
 import ZkLoginPage from './ZkLoginPage';
 import About from './About';
 import Roadmap from './Roadmap';
@@ -38,7 +38,7 @@ function App() {
             />
           }
         />
-        <Route path="/minted" element={<MintedPage setPage={setPage} />} />
+        {/* <Route path="/minted" element={<MintedPage setPage={setPage} />} /> */}
         <Route path="/zk" element={<ZkLoginPage setShowZkLogin={setShowZkLogin} />} />
         <Route path="/ar-rotate" element={<ARPage/>} />
         <Route path="/portal" element={<PortalPage />} />
