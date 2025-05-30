@@ -54,76 +54,48 @@ function Hero() {
     const [errorMessage, setErrorMessage] = useState('');
     const [showMintSuccessModal, setShowMintSuccessModal] = useState(false);
 
+    const handleMint = () => {
+        console.log('Initiate NFT Mint on Sui Blockchain');
+        const tx = new Transaction();
+        tx.moveCall({
+            package: PACKAGE_ID,
+            module: 'nft_minter',
+            function: 'mint_to_sender',
+            arguments: [
+                tx.object(MINT_STATE_ID), // shared object
+                tx.pure.vector('u8', [...'Immersiv3 Overflow 2025'].map(x => x.charCodeAt(0))), // name
+                tx.pure.vector('u8', [...'A 3D NFT artwork with AR experience'].map(x => x.charCodeAt(0))), // description
+                tx.pure.vector('u8', [...'https://immersiv3.tech/nft-assets/nft.glb'].map(x => x.charCodeAt(0))), // url            
+            ]
+        });
+        signAndExecute({
+            transaction: tx,
+        }, {
+            onSuccess: () => {
+                console.log('Minting transaction successful!');
+                setShowMintSuccessModal(true);
 
-const handleMint = () => {
-    console.log('Initiate NFT Mint on Sui Blockchain');
-    const tx = new Transaction();
-    const metadata = {
-        name: "ImmersivΞ Overflow 2025",
-        description: "A 3D NFT artwork with AR experience.",
-        image_url: "https://immersiv3.tech/nft-assets/nft-preview.webp", // NOTE: Temporary dev URL — to be updated with IPFS/Walrus in production
-        animation_url: "https://immersiv3.tech/nft-assets/nft.glb", // NOTE: Temporary dev URL — to be updated with IPFS/Walrus in production
-        file_size: "588 KB",
-        creator: "ImmersivΞ",
-        artist: "Artitaya",
-        copyright: "© 2025 ImmersivΞ",
-        license: "CC BY-NC 4.0",
-        keywords: ["3d art", "ar", "abstract", "particle wave"],
-        category: "art",
-        style: "abstract",
-        use_case: "ar experience",
-        technical_details: {
-            format: "GLB",
-            vertices: 1411344,
-            faces: 2571264,
-            materials: "PBR",
-            rendered_in: "Three.js",
-            animation_duration: "4s",
-            specular_map: "Grayscale texture used for specular highlights"
-        },
-        attributes: [
-            { trait_type: "Edition", value: "Prototype" }
-        ]
-    };
+            },
+            // onError callback 
+            onError: (error) => {
+                console.error('Minting transaction failed:', error);
+                // Check error if gas is sufficient                
+                let message = 'Transaction failed. Please try again.';
+                if (error.message.includes('Insufficient gas')) { 
+                    message = 'Insufficient gas. Please top up your SUI balance.';
+                } else if (error.message.includes('UserRejected')) {
+                    message = 'Transaction rejected by user.';
+                } else if (error.message.includes('gas budget exceeded')) {
+                    message = 'Gas budget exceeded. Consider increasing the gas budget.';
+                } else {
+                    message = `Error: ${error.message}`;
+                }
 
-    tx.moveCall({
-        package: PACKAGE_ID,
-        module: 'nft_minter',
-        function: 'mint_to_sender',
-        arguments: [
-            tx.object(MINT_STATE_ID), // shared object
-            tx.pure.vector('u8', [...'Immersiv3 Overflow 2025'].map(x => x.charCodeAt(0))), 
-            tx.pure.vector('u8', [...'A 3D NFT artwork with AR experience'].map(x => x.charCodeAt(0))), 
-            tx.pure.vector('u8', [...'https://immersiv3.tech/nft-assets/nft.glb'].map(x => x.charCodeAt(0))), 
-            tx.pure.vector('u8', [...JSON.stringify(metadata)].map(x => x.charCodeAt(0))) // metadata as JSON
-        ]
-    });
-
-    signAndExecute({
-        transaction: tx,
-    }, {
-        onSuccess: () => {
-            console.log('Minting transaction successful!');
-            setShowMintSuccessModal(true);
-        },
-        // onError callback 
-        onError: (error) => {
-            console.error('Minting transaction failed:', error);
-            let message = 'Transaction failed. Please try again.';
-            if (error.message.includes('Insufficient gas')) {
-                message = 'Insufficient gas. Please top up your SUI balance.';
-            } else if (error.message.includes('UserRejected')) {
-                message = 'Transaction rejected by user.';
-            } else if (error.message.includes('gas budget exceeded')) {
-                message = 'Gas budget exceeded. Consider increasing the gas budget.';
-            } else {
-                message = `Error: ${error.message}`;
+                setErrorMessage(message);
+                setShowErrorModal(true); // Show Modal Error
             }
-            setErrorMessage(message);
-            setShowErrorModal(true); // Show Modal Error
-        }
-    });
-};
+        });
+    };
 
     // Close Modal
     const closeErrorModal = () => {
@@ -166,7 +138,7 @@ const handleMint = () => {
                 <model-viewer
                 className="w-[350px] md:w-[450px] lg:w-[500px] h-[350px] md:h-[450px] lg:h-[500px] 
                 rounded-lg model-viewer-bg mb-5"
-                src="/nft-assets/nft.glb" // LOCAL: dev use only — for production, switch to IPFS or Walrus
+                src="/nft-assets/nft.glb" // LOCAL: dev use only / For production, switch to IPFS or
                 alt="3D NFT"
                 camera-controls
                 auto-rotate
