@@ -5,6 +5,7 @@ import PortalPage from './PortalPage';
 import About from './About';
 import Slogans from './Slogans';
 import Roadmap from './Roadmap';
+import FAQ from './FAQ';
 import Footer from './Footer';
 import Navbar from './Navbar';
 import ZkLoginPage from './ZkLoginPage';
@@ -68,6 +69,7 @@ function GalleryPage({ setPage, setShowZkLogin, showZkLogin }: GalleryPageProps)
     <section className="mb-16"><About /></section>
     <section className="mb-16"><Slogans /></section>
     <section className="mb-0"><Roadmap /></section>
+    <section className="mb-0"><FAQ /></section>
     <section><Footer /></section>
       {showZkLogin && <ZkLoginPage setShowZkLogin={setShowZkLogin} />}
     </div>

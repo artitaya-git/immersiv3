@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ConnectButton, useCurrentAccount } from '@mysten/dapp-kit';
+import { FaSun, FaMoon, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
 
 interface NavbarProps {
     isLanding: boolean;
@@ -25,16 +26,16 @@ function Navbar({ isLanding, setPage, setShowZkLogin }: NavbarProps) {
     const account = useCurrentAccount();
     const address = account?.address;
 
-    const toggleTheme = () => {
-        setIsDark(!isDark);
-        document.documentElement.classList.toggle('dark');
-    };
-
     const toggleMute = () => {
         if (audioRef.current) {
         audioRef.current.muted = !audioRef.current.muted;
         setIsMuted(audioRef.current.muted);
         }
+    };
+    
+    const toggleTheme = () => {
+        setIsDark(!isDark);
+        document.documentElement.classList.toggle('dark');
     };
 
     useEffect(() => {
@@ -49,6 +50,7 @@ function Navbar({ isLanding, setPage, setShowZkLogin }: NavbarProps) {
     };
 
     return (
+        // Logo
         <nav
         className={`flex justify-between items-center w-full top-0 z-50 px-4 py-2 ${
             isLanding
@@ -62,43 +64,43 @@ function Navbar({ isLanding, setPage, setShowZkLogin }: NavbarProps) {
         <div className="flex items-center space-x-4">
             {isLanding ? (
             <>
+                {/* Icon - Audio On/Off */}
                 <button
                 onClick={toggleMute}
                 className="p-2 rounded-full hover:bg-white/10 transition-all"
                 >
-                {isMuted ? '🔇' : '🔊'}
+                {isMuted ? <FaVolumeMute className="w-5 h-5 social-icon" /> : <FaVolumeUp className="w-5 h-5 social-icon" />}
                 </button>
 
                 <Link
                 to="/gallery"
                 state={{ scrollTo: 'about' }}
-                className="text-[#f1f1f1] hover:text-[#b2b2b2]"
+                className="text-[#f1f1f1] hover:text-[#b2b2b2] text-[15px]"
                 >
                     About
                 </Link>
-
             </>
             ) : (
             <>
+                {/* Icon - Background dark/light */}
                 <button
                 onClick={toggleTheme}
                 className="p-2 rounded-full hover:bg-[var(--text-color)] hover:text-[var(--bg-color)] transition-all"
-                >
-                {isDark ? '☀️' : '🌙'}
+                >                
+                {isDark ? <FaSun className="w-5 h-5 social-icon" /> : <FaMoon className="w-5 h-5 social-icon" />}
                 </button>
 
                 {/* === Wallet Connect Button === */}
-                    <ConnectButton
-                            connectText="Connect Wallet"
-                            className="wallet-connect-btn text-xs sm:text-sm font-medium min-w-[80px] max-w-[120px] sm:min-w-[120px] sm:max-w-[160px] truncate"
-                        />
+                <ConnectButton
+                className="wallet-connect-btn bg-[#F1F1F1] text-[#000000] px-3 py-1.5 !text-[14px] sm:px-3 sm:py-1.5 sm:text-xs md:px-4 md:py-2 md:text-sm lg:text-base min-w-[126px] max-w-[168px] sm:max-w-[168px] md:max-w-[189px] lg:max-w-[189px] whitespace-nowrap border-2 shadow-sm hover:shadow-lg hover:scale-104 active:scale-95"
+                connectText="Connect Wallet"
+                />
+                {address && (
+                    <span className="text-[11px] sm:text-sm max-w-[100px] sm:max-w-[140px] truncate ml-2">
+                    Connected: {address.slice(0, 6)}...{address.slice(-4)}
+                </span>
+                )}
 
-                        {/* === Show Address if Connected === */}
-                        {address && (
-                            <span className="text-[0.75rem] sm:text-xs truncate max-w-[100px] sm:max-w-[140px]">
-                                {address.slice(0, 6)}...{address.slice(-4)}
-                            </span>
-                        )}
 
                 {/* === ZkLogin === */}
                 {/* <button
@@ -114,11 +116,12 @@ function Navbar({ isLanding, setPage, setShowZkLogin }: NavbarProps) {
                 Google Login
                 </button> */}
 
+
             </>
             )}
         </div>
 
-        {/* === Audio === */}
+        {/* === Load Audio === */}
         {isLanding && (
             <audio
             ref={audioRef}

@@ -4,7 +4,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { ARButton } from 'three/examples/jsm/webxr/ARButton';
 
 /**
- * ARRotatePage Component: Show 3D model in AR with rotation, and simple wave motion.
+ * ARPage Component: Show 3D model in AR with rotation, and simple wave motion.
  *
  * This component makes a Three.js scene, loads a 3D model from a GLB file,
  * and uses the WebXR API to show the model in the user's real environment.
@@ -48,9 +48,11 @@ const ARPage = () => {
             renderer.domElement.style.width = '100vw';
             renderer.domElement.style.height = '100vh';
             renderer.domElement.style.zIndex = '10';
-            renderer.setClearColor(0x000000, 0); // Transparent background for AR
 
-            // Check for existing canvas to prevent duplication
+            // Set default background to solid black (#000000) for non-AR mode
+            renderer.setClearColor(0x000000, 1); 
+
+            // Check if a canvas already exists to prevent duplication
             const existingCanvas = document.querySelector('canvas');
             if (!existingCanvas) {
                 document.body.appendChild(renderer.domElement);
@@ -68,7 +70,7 @@ const ARPage = () => {
             // === 5. Load the 3D model (GLB file) ===
             const loader = new GLTFLoader();
             loader.load(
-                '/nft-assets/nft.glb', 
+                '/nft-assets/nft.glb', // LOCAL: dev use only — for production, switch to IPFS or Walrus
                 (gltf) => {
                     const model = gltf.scene;
                     model.position.set(0, 0, -2); // Initial position in front of user
@@ -95,6 +97,17 @@ const ARPage = () => {
                 document.body.appendChild(arButton);
             }
             arButtonRef.current = arButton;
+
+            // === Add this section to adjust the background when entering/exiting AR mode ===
+            renderer.xr.addEventListener('sessionstart', () => {
+                console.log('AR session started. Setting background to transparent.');
+                renderer.setClearColor(0x000000, 0); // Set to transparent when entering AR
+            });
+
+            renderer.xr.addEventListener('sessionend', () => {
+                console.log('AR session ended. Setting background to solid black.');
+                renderer.setClearColor(0x000000, 1); // Set to solid black when exiting AR
+            });
 
             // === 7. Add event listener to handle screen resize ===
             window.addEventListener('resize', onWindowResize);
@@ -126,10 +139,6 @@ const ARPage = () => {
                 }
                 // Simple wave motion (up-down) using Math.sin
                 modelRef.current.position.y = Math.sin(modelRef.current.position.x) * 0.5;
-                console.log(
-                    'Model position:',
-                    `x=${modelRef.current.position.x.toFixed(2)}, y=${modelRef.current.position.y.toFixed(2)}`
-                ); // Debug position
             }
         };
 
@@ -140,7 +149,7 @@ const ARPage = () => {
             if (rendererRef.current) {
                 rendererRef.current.setAnimationLoop(() => {
                     if (modelRef.current && sceneRef.current && cameraRef.current) {
-                        modelRef.current.rotation.y += 0.002; // Keep original rotation
+                        modelRef.current.rotation.y += 0.0025; 
                         updatePosition(); // Move model to the right with wave
                         rendererRef.current!.render(sceneRef.current, cameraRef.current);
                     }

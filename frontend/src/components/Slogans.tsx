@@ -46,8 +46,8 @@ function Slogans() {
             y: 0,
             opacity: 1,
             duration: 1,          // Animation duration
-            ease: 'power2.out', // Easing function
-            delay: 1.0,          // Delay before animation
+            ease: 'power2.out',   // Easing function
+            delay: 1.0,           // Delay before animation
             scrollTrigger: {
                 trigger: finalLineRef.current, // Trigger element
                 start: 'top 90%',       // Start when the top is 90% in viewport

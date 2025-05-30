@@ -37,97 +37,51 @@ function Roadmap() {
     }, []);
 
     return (
-        // <section className="py-16 mx-auto px-4">
-        // <h3 className="text-3xl font-bold mb-8 text-center">Our Roadmap</h3>
-        //     <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6"> 
-        //     <div ref={card1Ref} className="roadmap-card p-5 border border-[var(--text-color)] rounded-lg text-center">
-        //     <h4 className="text-xl font-semibold mb-4">Phase 1: Early Adoption</h4>
-        //     <div className="text-sm opacity-80">
-        //         <ul className="list-disc list-inside leading-relaxed square-bullets">
-        //         <li>Develop and deploy Kiosk smart contract</li>
-        //         <li>Launch stable version of 3D NFT Gallery</li>
-        //         <li>Enable NFT Minting (Enhanced Metadata)</li>
-        //         <li>Implement Multi-Format 3D Viewer</li>
-        //         <li>Build Community (Discord & Socials)</li>
-        //         </ul>
-        //     </div>
-        //     </div>
-        //     <div ref={card2Ref} className="roadmap-card p-5 border border-[var(--text-color)] rounded-lg text-center">
-        //     <h4 className="text-xl font-semibold mb-4">Phase 2: Creator Onboarding</h4>
-        //     <div className="text-sm opacity-80">
-        //         <ul className="list-disc list-inside leading-relaxed">
-        //         <li>Develop Creator Dashboard</li>
-        //         <li>Launch Creator Profiles (Showcase)</li>
-        //         <li>Partner with Sui Ecosystem</li>
-        //         <li>Introduce Interactive 3D Spaces</li>
-        //         <li>Enable Virtual Events & Experiences (Ticketed)</li>
-        //         <li>Launch Lite Marketplace for 3D NFTs and assets</li>
-        //         <li>Integrate AI (Smart Search & Tagging)</li>
-        //         </ul>
-        //     </div>
-        //     </div>
-        //     <div ref={card3Ref} className="roadmap-card p-5 border border-[var(--text-color)] rounded-lg text-center">
-        //     <h4 className="text-xl font-semibold mb-4">Phase 3: Monetization</h4>
-        //     <div className="text-sm opacity-80">
-        //         <ul className="list-disc list-inside leading-relaxed">
-        //         <li>Launch Full Marketplace</li>
-        //         <li>Use AI (Personalized Recommendations)</li>
-        //         <li>Airdrop tokens to early supporters and creators</li>
-        //         <li>Implement DAO Governance</li>
-        //         <li>Grow XR Creator Ecosystem</li>
-        //         <li>Develop Advanced Creator Tools</li>
-        //         </ul>
-        //     </div>
-        //     </div>
-        // </div>
-        // </section>
+    
 
-        
-<section className="py-16 mx-auto px-4">
-            <h3 className="text-3xl font-bold mb-8 text-center">Our Roadmap</h3>
-            <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div ref={card1Ref} className="roadmap-card p-5 border border-[var(--text-color)] rounded-lg text-center">
-                    <h4 className="text-xl font-semibold mb-4">Phase 1: Early Adoption</h4>
-                    <div className="text-sm opacity-80">
-                        <ul className="list-disc list-inside leading-loose space-y-1 square-bullets">
-                            <li>Develop and deploy Kiosk smart contract</li>
-                            <li>Launch stable version of 3D NFT Gallery</li>
-                            <li>Enable NFT Minting (Enhanced Metadata)</li>
-                            <li>Implement Multi-Format 3D Viewer</li>
-                            <li>Build Community (Discord & Socials)</li>
-                        </ul>
-                    </div>
-                </div>
-                <div ref={card2Ref} className="roadmap-card p-5 border border-[var(--text-color)] rounded-lg text-center">
-                    <h4 className="text-xl font-semibold mb-4">Phase 2: Creator Onboarding</h4>
-                    <div className="text-sm opacity-80">
-                        <ul className="list-disc list-inside leading-loose space-y-1">
-                            <li>Develop Creator Dashboard</li>
-                            <li>Launch Creator Profiles (Showcase)</li>
-                            <li>Partner with Sui Ecosystem</li>
-                            <li>Introduce Interactive 3D Spaces</li>
-                            <li>Enable Virtual Events & Experiences (Ticketed)</li>
-                            <li>Launch Lite Marketplace for 3D NFTs and assets</li>
-                            <li>Integrate AI (Smart Search & Tagging)</li>
-                        </ul>
-                    </div>
-                </div>
-                <div ref={card3Ref} className="roadmap-card p-5 border border-[var(--text-color)] rounded-lg text-center">
-                    <h4 className="text-xl font-semibold mb-4">Phase 3: Monetization</h4>
-                    <div className="text-sm opacity-80">
-                        <ul className="list-disc list-inside leading-loose space-y-1">
-                            <li>Launch Full Marketplace</li>
-                            <li>Use AI (Personalized Recommendations)</li>
-                            <li>Airdrop tokens to early supporters and creators</li>
-                            <li>Implement DAO Governance</li>
-                            <li>Develop Advanced Creator Tools</li>
-                            <li>Grow XR Creator Ecosystem</li>
-                        </ul>
-                    </div>
-                </div>
+        <section className="py-16 max-w-5xl mx-auto px-4">
+        <h3 className="text-3xl font-bold mb-8 text-center">Our Roadmap</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div ref={card1Ref} className="roadmap-card p-6 border border-[var(--text-color)] rounded-lg text-center">
+            <h4 className="text-xl font-semibold mb-4">Phase 1: Early Adoption</h4>
+            <p className="text-sm opacity-80">
+                <ul className="list-disc list-inside leading-relaxed space-y-0.5">
+                <li>Develop and deploy Kiosk smart contract</li>
+                <li>Launch stable version of 3D NFTs Gallery</li>
+                <li>Enable NFTs Minting</li>
+                <li>Implement Multi-Format 3D Viewer</li>
+                <li>Build Community (Discord & Socials)</li>
+                </ul>
+            </p>
             </div>
+            <div ref={card2Ref} className="roadmap-card p-6 border border-[var(--text-color)] rounded-lg text-center">
+            <h4 className="text-xl font-semibold mb-4">Phase 2: Creator Onboarding</h4>
+            <p className="text-sm opacity-80">
+                <ul className="list-disc list-inside leading-relaxed space-y-0.5">
+                <li>Develop Creator Dashboard</li>
+                <li>Launch Creator Profiles (Showcase)</li>
+                <li>Partner with Sui Ecosystem</li>
+                <li>Introduce Interactive 3D Spaces</li>
+                <li>Launch Lite Marketplace for 3D NFTs and assets</li>
+                <li>Integrate AI (Smart Search & Tagging)</li>
+                </ul>
+            </p>
+            </div>
+            <div ref={card3Ref} className="roadmap-card p-6 border border-[var(--text-color)] rounded-lg text-center">
+            <h4 className="text-xl font-semibold mb-4">Phase 3: Monetization</h4>
+            <p className="text-sm opacity-80">
+                <ul className="list-disc list-inside leading-relaxed space-y-0.5">
+                <li>Airdrop tokens to early supporters and creators</li>
+                <li>Implement DAO Governance</li>
+                <li>Launch Full Marketplace</li>
+                <li>Use AI (Personalized Recommendations)</li>
+                <li>Develop Advanced Creator Tools</li>
+                <li>Grow XR Creator Ecosystem</li>
+                </ul>
+            </p>
+            </div>
+        </div>
         </section>
-
 
     );
 }

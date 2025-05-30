@@ -56,7 +56,7 @@ function PortalPage() {
             <div className="bg-[var(--bg-color)] text-[var(--text-color)] rounded-lg shadow-xl border border-white/30 p-4">
                 <h3 className="text-lg font-semibold mb-2">Getting Started:</h3>
                 <ul className="list-none text-sm space-y-2 leading-relaxed">
-                <li>Enter digital spaces via this 3D portal.</li>
+                <li>Enter digital spaces via this portal.</li>
                 <li>
                     Tap <span className="font-semibold">[Enter Portal]</span> to begin.
                 </li>

@@ -4,13 +4,14 @@
 @tailwind utilities;
 
 section h2 {
-    margin-top: 2rem !important;
+    margin-top: 1.5rem !important;
 }
 
 .model-viewer-bg {
     background-color: #000000;
 }
 
+/* To fit 360 view image with canvas */
 .immersiv3-vr-container canvas {
     position: absolute;
     top: 0;
@@ -24,15 +25,16 @@ section h2 {
         @apply border border-[var(--text-color)] rounded-md px-3 py-1.5 transition-all hover:bg-[var(--text-color)] hover:text-[var(--bg-color)];
     }
 
-/* Reduce size on mobile device (<640px) */
-@media (max-width: 640px) {
-    .wallet-connect-btn {
-        transform: scale(0.85);
-        transform-origin: center;
-        min-width: 70px;
-        max-width: 100px;
-        padding: 0.25rem 0.5rem; /* ~4px, 2px */
-        font-size: 12px !important; 
+    /* Footer icon */
+    .social-icon {
+            @apply fill-[var(--text-color)] transition-all;
+        }
+
+    /* Navbat icon */
+    nav button svg.social-icon {
+        width: 16px !important; 
+        height: 16px !important;
     }
 }
-}
+
+

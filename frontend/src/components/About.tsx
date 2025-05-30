@@ -19,11 +19,11 @@ function About() {
         <p>
           ImmersivΞ is building a next-generation platform empowering creators to design, 
           share, and monetize interactive XR experiences for a diverse audience, 
-          from digital art and immersive education to branded activations.
+          from digital art and cultural exploration to branded activations.
         </p>
         <p className="mt-8">
-          We began with a 3D NFT gallery on the Sui Blockchain on testnet — offering 1111 exclusive work 
-          with AR features during the Sui Overflow 2025 hackathon — as an early exploration 
+          We began with a 3D NFT gallery on the Sui Blockchain on testnet — offering 1,111 early edition 
+          digital pieces with AR features during the Sui Overflow 2025 hackathon — as an early exploration 
           of digital ownership and immersive presentation.
         </p>
       </div>
