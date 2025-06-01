@@ -3,7 +3,6 @@ import React, { useRef } from 'react';
 /**
  * About Component: Displays the "About Us" section of the website.
  *
- * This component provides information about ImmersivΞ
  */
 function About() {
   return (

@@ -4,9 +4,6 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 
 /**
  * Component Roadmap: Draft project implementation plan
- *
- * This component displays the project roadmap for ImmersivΞ, divided into 3 phases,
- * and uses GSAP animation with ScrollTrigger to create engaging scroll effects.
  */
 function Roadmap() {
     const card1Ref = useRef(null);
@@ -26,10 +23,10 @@ function Roadmap() {
             ease: 'power2.out',
             scrollTrigger: {
                 trigger: ref.current,
-                start: 'top 85%', // Start animation when the top of the card is 85% of the viewport
-                end: 'bottom 65%', // End animation when the bottom of the card is 65% of the viewport
+                start: 'top 85%', // Card top at 85% viewport height
+                end: 'bottom 65%', // Card bottom at 65% viewport height
                 scrub: 1, // Add scrub effect when scrolling
-                toggleActions: 'play none none reverse', // Control animation playback on enter/exit viewport
+                toggleActions: 'play none none reverse', 
             },
             }
         );
@@ -37,14 +34,12 @@ function Roadmap() {
     }, []);
 
     return (
-    
-
-        <section className="py-16 max-w-5xl mx-auto px-4">
+        <section className="pt-24 pb-16 mt-12 max-w-5xl mx-auto px-4">
         <h3 className="text-3xl font-bold mb-8 text-center">Our Roadmap</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div ref={card1Ref} className="roadmap-card p-6 border border-[var(--text-color)] rounded-lg text-center">
             <h4 className="text-xl font-semibold mb-4">Phase 1: Early Adoption</h4>
-            <p className="text-sm opacity-80">
+            <div className="text-sm opacity-80">
                 <ul className="list-disc list-inside leading-relaxed space-y-0.5">
                 <li>Develop and deploy Kiosk smart contract</li>
                 <li>Launch stable version of 3D NFTs Gallery</li>
@@ -52,11 +47,11 @@ function Roadmap() {
                 <li>Implement Multi-Format 3D Viewer</li>
                 <li>Build Community (Discord & Socials)</li>
                 </ul>
-            </p>
+            </div>
             </div>
             <div ref={card2Ref} className="roadmap-card p-6 border border-[var(--text-color)] rounded-lg text-center">
             <h4 className="text-xl font-semibold mb-4">Phase 2: Creator Onboarding</h4>
-            <p className="text-sm opacity-80">
+            <div className="text-sm opacity-80">
                 <ul className="list-disc list-inside leading-relaxed space-y-0.5">
                 <li>Develop Creator Dashboard</li>
                 <li>Launch Creator Profiles (Showcase)</li>
@@ -65,11 +60,11 @@ function Roadmap() {
                 <li>Launch Lite Marketplace for 3D NFTs and assets</li>
                 <li>Integrate AI (Smart Search & Tagging)</li>
                 </ul>
-            </p>
+            </div>
             </div>
             <div ref={card3Ref} className="roadmap-card p-6 border border-[var(--text-color)] rounded-lg text-center">
             <h4 className="text-xl font-semibold mb-4">Phase 3: Monetization</h4>
-            <p className="text-sm opacity-80">
+            <div className="text-sm opacity-80">
                 <ul className="list-disc list-inside leading-relaxed space-y-0.5">
                 <li>Airdrop tokens to early supporters and creators</li>
                 <li>Implement DAO Governance</li>
@@ -78,11 +73,10 @@ function Roadmap() {
                 <li>Develop Advanced Creator Tools</li>
                 <li>Grow XR Creator Ecosystem</li>
                 </ul>
-            </p>
+            </div>
             </div>
         </div>
         </section>
-
     );
 }
 

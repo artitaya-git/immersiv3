@@ -9,24 +9,24 @@ gsap.registerPlugin(ScrollTrigger);
 /**
  * LandingPage Component: The initial page the user sees when entering the application.
  *
- * This page displays a video background, a prominent title and slogan,
- * and a button to enter the main gallery. It also handles a custom scroll
- * animation to transition to the gallery.
  */
 
 function LandingPage() {
-  const videoRef = useRef<HTMLVideoElement>(null); // Ref for the background video element
-  const logoRef = useRef<HTMLHeadingElement>(null); // Ref for the main logo
-  const slogan1Ref = useRef<HTMLParagraphElement>(null); // Ref for the slogan
-  const scrollRef = useRef<HTMLParagraphElement>(null); // Ref for the scroll indicator
-  const enterButtonRef = useRef<HTMLButtonElement>(null); // Ref for the "Enter the Gallery" button
-  const containerRef = useRef<HTMLDivElement>(null);  // Ref for the main container
+  const videoRef = useRef<HTMLVideoElement>(null); 
+  const logoRef = useRef<HTMLHeadingElement>(null); 
+  const slogan1Ref = useRef<HTMLParagraphElement>(null); 
+  const scrollRef = useRef<HTMLParagraphElement>(null); 
+  const enterButtonRef = useRef<HTMLButtonElement>(null); 
+  const containerRef = useRef<HTMLDivElement>(null);  
   const navigate = useNavigate();
   const isScrolling = useRef(false);
+  
+  // Touch event tracking
+  const touchStartY = useRef(0);
+  const touchStartTime = useRef(0);
 
   useEffect(() => {
     // === GSAP Animations ===
-    // Entrance animations for elements on the page.
     gsap.fromTo(
       videoRef.current,
       { opacity: 0 },
@@ -73,48 +73,84 @@ function LandingPage() {
       { y: 0, opacity: 1, duration: 1, delay: 1 }
     );
 
-    // === Function for scroll ===
-    // Handles the scroll event to navigate to the gallery with animation.
-    const handleScroll = (e: WheelEvent) => {
+    // === Animation function ===
+    const triggerTransition = () => {
       if (isScrolling.current) return;
       
-      if (e.deltaY > 0) { // Check if scroll down
-        isScrolling.current = true;
-        
-        // Create smooth animation timeline
-        const tl = gsap.timeline({
-          onComplete: () => navigate('/gallery') // Navigate after animation
-        });
+      isScrolling.current = true;
+      
+      // Create smooth animation timeline
+      const tl = gsap.timeline({
+        onComplete: () => navigate('/gallery') 
+      });
 
-        // Fade out elements
-        tl.to([logoRef.current, slogan1Ref.current, enterButtonRef.current, scrollRef.current], {
-          opacity: 0,
-          y: -50,
-          duration: 0.8,
-          ease: 'power2.in',
-          stagger: 0.1 // Stagger the animation of each element
-        })
-        .to(videoRef.current, {
-          opacity: 0,
-          duration: 0.8,
-          ease: 'power2.in'
-        }, 0) // Start at the beginning of the timeline (0)
-        .to(containerRef.current, {
-          backgroundColor: '#000', // Change background color
-          duration: 0.8,
-          ease: 'power2.in'
-        }, 0); // Start at the beginning of the timeline (0)
+      // Fade out elements
+      tl.to([logoRef.current, slogan1Ref.current, enterButtonRef.current, scrollRef.current], {
+        opacity: 0,
+        y: -50,
+        duration: 0.8,
+        ease: 'power2.in',
+        stagger: 0.1 
+      })
+      .to(videoRef.current, {
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power2.in'
+      }, 0) // Start at the beginning of the timeline (0)
+      .to(containerRef.current, {
+        backgroundColor: '#000000', 
+        duration: 0.8,
+        ease: 'power2.in'
+      }, 0); 
+    };
+
+    // === Desktop scroll handler ===
+    const handleScroll = (e: WheelEvent) => {
+      if (e.deltaY > 0) { // Check if scroll down
+        e.preventDefault();
+        triggerTransition();
+      }
+    };
+
+    // === Mobile touch handlers ===
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY.current = e.touches[0].clientY;
+      touchStartTime.current = Date.now();
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      // Prevent default scrolling behavior
+      e.preventDefault();
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      const touchEndY = e.changedTouches[0].clientY;
+      const touchEndTime = Date.now();
+      
+      const deltaY = touchStartY.current - touchEndY;
+      const deltaTime = touchEndTime - touchStartTime.current;
+      
+    // Detect quick upward swipe (scroll down)
+    // deltaY > 50: Upward swipe (scroll down)
+    // deltaTime < 300: Quick gesture
+      if (deltaY > 50 && deltaTime < 300) {
+        triggerTransition();
       }
     };
 
     window.addEventListener('wheel', handleScroll, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: false });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchend', handleTouchEnd, { passive: false });
     
     return () => {
       window.removeEventListener('wheel', handleScroll);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
     };
   }, [navigate]);
   
-
   return (
 
     // === Video background ===
@@ -137,7 +173,8 @@ function LandingPage() {
                 </h1>
                 <p
                     ref={slogan1Ref}
-                    className="text-base md:text-2xl lg:text-4xl font-semibold leading-snug max-w-5xl mx-auto px-4 whitespace-pre-wrap text-[#b2b2b2]"
+                    className="text-base md:text-2xl lg:text-4xl font-semibold leading-snug max-w-5xl 
+                    mx-auto px-4 whitespace-pre-wrap text-[#b2b2b2]"
                 >
                     <span className="block">Where imagination shapes reality</span>
                     <span className="block">— in 3D, AR, and beyond</span>
@@ -146,7 +183,10 @@ function LandingPage() {
         <button
           ref={enterButtonRef}
           onClick={() => {
-            // Same animation as the button 'Enter the Gallery'
+
+            if (isScrolling.current) return;
+            isScrolling.current = true;
+            
             const tl = gsap.timeline({
               onComplete: () => navigate('/gallery')
             });
@@ -170,7 +210,8 @@ function LandingPage() {
             }, 0);
           }}
           
-          className="connect-btn px-3 py-1.5 text-sm md:px-6 md:py-3 md:text-lg border border-[#b2b2b2] text-[#b2b2b2] rounded-md hover:bg-[#b2b2b2] hover:text-black mt-8"
+          className="connect-btn px-3 py-1.5 text-sm md:px-6 md:py-3 md:text-lg border border-[#b2b2b2] 
+          text-[#b2b2b2] rounded-md hover:bg-[#b2b2b2] hover:text-black mt-8"
         >
           Enter the Gallery
         </button>

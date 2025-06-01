@@ -1,9 +1,10 @@
-import { useSignAndExecuteTransaction, useSuiClient, useSuiClientQuery } from '@mysten/dapp-kit';
+import { useSignAndExecuteTransaction, useSuiClient, useSuiClientQuery, useCurrentAccount } from '@mysten/dapp-kit';
 import { Transaction } from '@mysten/sui/transactions';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'; 
 import React, { useState } from 'react';
-import MintedSuccessModal from './MintedSuccessModal'; 
+import MintedSuccessModal from './MintedSuccessModal';
+import WalletAlert from './WalletAlert';
 
 const PACKAGE_ID = `0x3e1473fb76a629fd4ac4348966f62ee30f93aa9e0da22d965bf8a7f3c02b7f51`;
 const MINT_STATE_ID = `0x5227757e15d23dca4d1114985daef482409a395cf4199754bb6ecaf8badff19c`;
@@ -43,18 +44,25 @@ interface MoveObjectContent {
  * Hero Component: Displays the main landing section of the application.
  *
  * This component showcases the primary call to action for the user,
- * typically involving an introduction to the app's main features
  * and a way to get started (e.g., minting an NFT).
  */
 function Hero() {
     const { mutate: signAndExecute } = useSignAndExecuteTransaction();
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
+    const account = useCurrentAccount(); 
 
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [showMintSuccessModal, setShowMintSuccessModal] = useState(false);
+    const [showWalletAlert, setShowWalletAlert] = useState(false);
 
     const handleMint = () => {
+        // Check if wallet is connected
+        if (!account?.address) {
+            setShowWalletAlert(true);
+            return;
+        }
+
         console.log('Initiate NFT Mint on Sui Blockchain');
         const tx = new Transaction();
         tx.moveCall({
@@ -63,9 +71,9 @@ function Hero() {
             function: 'mint_to_sender',
             arguments: [
                 tx.object(MINT_STATE_ID), // shared object
-                tx.pure.vector('u8', [...'Immersiv3 Overflow 2025'].map(x => x.charCodeAt(0))), // name
-                tx.pure.vector('u8', [...'A 3D NFT artwork with AR experience'].map(x => x.charCodeAt(0))), // description
-                tx.pure.vector('u8', [...'https://immersiv3.tech/nft-assets/nft.glb'].map(x => x.charCodeAt(0))), // url            
+                tx.pure.vector('u8', [...'Immersiv3 Overflow 2025'].map(x => x.charCodeAt(0))), 
+                tx.pure.vector('u8', [...'A 3D NFT artwork with AR experience'].map(x => x.charCodeAt(0))), 
+                tx.pure.vector('u8', [...'https://immersiv3.tech/nft-assets/nft.glb'].map(x => x.charCodeAt(0))), // NOTE: Temporary dev URL — to be updated with Walrus/IPFS in production         
             ]
         });
         signAndExecute({
@@ -108,86 +116,102 @@ function Hero() {
         navigate('/gallery');
     };
 
+    const handleConnectWallet = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => {
+            const connectButton = document.querySelector('[data-testid="connect-button"]') as HTMLElement;
+            if (connectButton) {
+                connectButton.focus();
+            }
+        }, 500);
+    };
+
     return (
         <section className="min-h-screen flex flex-col items-center text-center pt-20 pb-20">
-        <div className="w-full max-w-4xl px-4">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-5 mt-16">
-            ImmersivΞ 3D NFT
-            </h2>
-            <p className="text-sm sm:text-base lg:text-lg opacity-80 mb-8">
-            Bring Digital Art to Life — Discover immersive AR experiences.
-            </p>
+            {/* Header Section */}
+            <div className="w-full max-w-4xl px-4 mb-8">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-5 mt-16">
+                    ImmersivΞ 3D NFT
+                </h2>
+                <p className="text-sm sm:text-base lg:text-lg opacity-80 mb-10">
+                    Bring Digital Art to Life — Discover immersive AR experiences.
+                </p>
 
-            {/* === Enter AR Buttons / WebXR + Three.js ===*/}
-            <div className="flex justify-center space-x-7">
-            <Link
-                to="/ar-rotate"
-                className="connect-btn px-6 py-2 border border-[var(--text-color)] rounded-md 
-                text-lg hover:bg-[var(--text-color)] hover:text-[var(--bg-color)] mb-5"
-            >
-                Enter AR
-            </Link>
+                {/* === Enter AR Button === */}
+                <div className="flex justify-center space-x-7">
+                    <Link
+                        to="/ar-rotate"
+                        className="connect-btn px-6 py-2 border border-[var(--text-color)] rounded-md 
+                        text-lg hover:bg-[var(--text-color)] hover:text-[var(--bg-color)] mb-1"
+                    >
+                        Enter AR
+                    </Link>
+                </div>
             </div>
-        </div>
+            <div className="w-full max-w-6xl px-4 flex-1 flex flex-col items-center justify-center">
+                
+                {/* === Google Model-viewer === */}
+                <div className="flex flex-col items-center mb-8">
+                    <model-viewer
+                        className="w-[350px] md:w-[450px] lg:w-[500px] xl:w-[600px] 
+                        h-[350px] md:h-[450px] lg:h-[500px] xl:h-[600px] 
+                        rounded-lg model-viewer-bg mb-5"
+                        src="/nft-assets/nft.glb" // LOCAL: dev use only — for production, switch to Walrus/IPFS 
+                        alt="3D NFT"
+                        camera-controls
+                        auto-rotate
+                        loading="eager"
+                        touch-action="pan-y"
+                        tone-mapping="commerce"
+                        shadow-intensity="0.8"
+                    />
 
-        <div className="flex-1 flex flex-col items-center justify-center w-full max-w-6xl px-4">
+                    {/* === Free Mint Button === */}
+                    <button
+                        onClick={handleMint}
+                        className="connect-btn px-5 py-2 border border-[var(--text-color)] rounded-md 
+                        text-lg hover:bg-[var(--text-color)] hover:text-[var(--bg-color)]"
+                    >
+                        Free Mint Now
+                    </button>
+                    <NumberMinted />
+                </div>
 
-            {/* === Google Model Viewer === */}
-            <div className="w-full flex justify-center">
-            <div className="flex flex-col items-center">
-                <model-viewer
-                className="w-[350px] md:w-[450px] lg:w-[500px] h-[350px] md:h-[450px] lg:h-[500px] 
-                rounded-lg model-viewer-bg mb-5"
-                src="/nft-assets/nft.glb" // LOCAL: dev use only / For production, switch to IPFS or
-                alt="3D NFT"
-                camera-controls
-                auto-rotate
-                loading="eager"
-                touch-action="pan-y"
-                tone-mapping="commerce"
-                shadow-intensity="0.8"
-                />
+                {/* Quick Tips - Below Model */}
+                <div className="w-full max-w-md">
+                    <div className="bg-[var(--bg-color)] text-[var(--text-color)] rounded-lg shadow-xl border border-white/30 p-4">
+                        <h3 className="text-lg font-semibold mb-2">Quick Tips:</h3>
+                        <ul className="list-none text-sm space-y-2">
+                            <li>
+                                <span className="font-semibold">Rotate 3D:</span> Click & drag (desktop) or swipe (mobile).<br />
+                                <span className="font-semibold">Zoom 3D:</span> Scroll mouse wheel (desktop) or pinch (mobile).
+                            </li>
+                            <li className="my-4">
+                                <span className="text-lg font-semibold block mb-2">Enter AR:</span>
+                                <ul className="list-none ml-4 space-y-1">
+                                    <li>
+                                        Tap the <span className="font-semibold">[Enter AR]</span> button to view the object in your real-world space.
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="my-4">
+                                <span className="text-lg font-semibold block mb-2">AR Compatibility:</span>
+                                <ul className="list-none ml-4 space-y-1">
+                                    <li><span className="font-semibold">Best on:</span> Android (Chrome, etc.)</li>
+                                    <li><span className="font-semibold">NOT Supported:</span> Desktop, iPhone.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-                 {/* === Free Mint Button === */}
-                <button
-                onClick={handleMint}
-                className="connect-btn px-5 py-2 border border-[var(--text-color)] rounded-md 
-                text-lg hover:bg-[var(--text-color)] hover:text-[var(--bg-color)]"
-                >
-                Free Mint Now
-                </button>
-                <NumberMinted />
-            </div>
-            </div>
-
-            {/* === 3D Viewer + AR user manual === */}
-            <div className="w-full max-w-md p-4 mx-auto mt-8 2xl:mt-0 2xl:absolute 2xl:right-10 2xl:top-[76%] 2xl:-translate-y-1/2">
-            <div className="bg-[var(--bg-color)] text-[var(--text-color)] rounded-lg shadow-xl border border-white/30 p-4">
-                <h3 className="text-lg font-semibold mb-2">Quick Tips:</h3>
-                <ul className="list-none text-sm space-y-2">
-                <li>
-                    <span className="font-semibold">Rotate 3D:</span> Click & drag (desktop) or swipe (mobile).<br></br>
-                    <span className="font-semibold">Zoom 3D:</span> Scroll mouse wheel (desktop) or pinch (mobile).
-                </li>
-                <li className="my-4">
-                    <span className="text-lg font-semibold block mb-2">Enter AR:</span>
-                    <ul className="list-none ml-4 space-y-1">
-                    <li>
-                        Tap the <span className="font-semibold">[Enter AR]</span> button to view the object in your real-world space.
-                    </li>
-                    </ul>
-                </li>
-                <li className="my-4">
-                    <span className="text-lg font-semibold block mb-2">AR Compatibility:</span>
-                    <ul className="list-none ml-4 space-y-1">
-                    <li><span className="font-semibold">Best on:</span> Android (Chrome, etc.)</li>
-                    <li><span className="font-semibold">NOT Supported:</span> Desktop, iPhone.</li>
-                    </ul>
-                </li>
-                </ul>
-            </div>
-            </div>
-        </div>
+            {/* Modals */}
+            <WalletAlert 
+                show={showWalletAlert}
+                onClose={() => setShowWalletAlert(false)}
+                onConnectWallet={handleConnectWallet}
+            />
 
             <MintedSuccessModal 
                 show={showMintSuccessModal}
