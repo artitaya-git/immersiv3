@@ -221,7 +221,7 @@ function LandingPage() {
         </p>
       </div>
 
-      <Navbar isLanding={true} setPage={() => {}} setShowZkLogin={() => {}} />
+      <Navbar isLanding={true} />
     </section>
   );
 }
