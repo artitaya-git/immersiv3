@@ -21,7 +21,7 @@ function About() {
           from digital art and cultural exploration to branded activations.
         </p>
         <p className="mt-8">
-          We began with a 3D NFT gallery on the Sui Blockchain on testnet — offering 1,111 early edition 
+          We began with a 3D NFT gallery on the Sui Blockchain on testnet — offering 1111 early edition 
           digital pieces with AR features during the Sui Overflow 2025 hackathon — as an early exploration 
           of digital ownership and immersive presentation.
         </p>

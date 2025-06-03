@@ -42,9 +42,12 @@ function Navbar({ isLanding }: NavbarProps) {
     const handleMenuItemClick = (path: string, section?: string) => {
         setShowMenu(false);
         if (section) {
-            navigate(path, { state: { scrollTo: section } });
+            navigate(path, { 
+                replace: true,
+                state: { scrollTo: section } 
+            });
         } else {
-            navigate(path);
+           navigate(path, { replace: true });
         }
     };
 
@@ -174,7 +177,7 @@ function Navbar({ isLanding }: NavbarProps) {
                             className="w-full text-center py-3 px-4 text-[#f1f1f1] hover:text-[#000000] hover:bg-[#f1f1f1] 
                             transition-all duration-300 rounded border border-[#f1f1f1]/20 hover:border-[#f1f1f1]"
                         >
-                            About Us
+                            About
                         </button>
                         
                         <button

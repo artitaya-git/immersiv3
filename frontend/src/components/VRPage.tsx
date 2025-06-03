@@ -109,7 +109,7 @@ const VRPage = () => {
                 const material = new THREE.MeshBasicMaterial({
                     color: 0x00DDFF,
                     transparent: true,
-                    opacity: 0.8,
+                    opacity: 0.6,
                 });
 
                 // Use InstancedMesh for efficient rendering of many objects
@@ -167,28 +167,38 @@ const VRPage = () => {
 
         function animate() {
             if (!rendererRef.current) return;
+            
+            const clock = new THREE.Clock(); // Add clock for frame-independent animation
+            
             rendererRef.current.setAnimationLoop(() => {
                 if (controlsRef.current) {
                     controlsRef.current.update();
                 }
-                const time = Date.now() * 0.001;
+                
+                const deltaTime = clock.getDelta(); // Time elapsed per frame
+                const time = clock.getElapsedTime(); // Total elapsed time
+                
                 if (sphereRef.current) {
-                    sphereRef.current.rotation.y += 0.001;
+                    sphereRef.current.rotation.y += 0.03 * deltaTime; 
                 }
+                
                 if (floatingSpheresRef.current && (floatingSpheresRef.current as any).sphereData) {
                     const instancedSpheres = floatingSpheresRef.current;
                     const sphereData = (instancedSpheres as any).sphereData;
                     const matrix = new THREE.Matrix4();
                     const euler = new THREE.Euler();
                     const scaleVec = new THREE.Vector3();
+                    
                     for (let i = 0; i < sphereData.length; i++) {
                         const data = sphereData[i];
                         const newY = data.originalPosition.y + Math.sin(time * data.floatSpeed + data.floatOffset) * 1.5;
+                        
                         euler.set(
                             time * data.rotationSpeed,
                             time * data.rotationSpeed * 1.5,
                             time * data.rotationSpeed * 0.5
                         );
+                        
                         const pulse = 1 + Math.sin(time * 2.5 + data.floatOffset) * 0.2;
                         scaleVec.set(pulse, pulse, pulse);
                         matrix.makeRotationFromEuler(euler);
@@ -198,6 +208,7 @@ const VRPage = () => {
                     }
                     instancedSpheres.instanceMatrix.needsUpdate = true;
                 }
+                
                 if (sceneRef.current && cameraRef.current) {
                     rendererRef.current?.render(sceneRef.current, cameraRef.current);
                 }

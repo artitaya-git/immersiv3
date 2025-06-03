@@ -62,7 +62,7 @@ const ARPage = () => {
             // === Load the 3D model (GLB file) ===
             const loader = new GLTFLoader();
             loader.load(
-                '/nft-assets/nft.glb', // LOCAL: dev use only — for production, switch to IPFS or Walrus
+                '/nft-assets/nft.glb', // LOCAL: dev use only — for production, switch to Walrus / IPFS
                 (gltf) => {
                     const model = gltf.scene;
                     model.position.set(0, 0, -2); // Initial position in front of user
@@ -110,29 +110,33 @@ const ARPage = () => {
             }
         };
 
+        const animate = () => {
+            if (rendererRef.current) {
+                const clock = new THREE.Clock(); // Add clock for frame-independent animation
+                
+                rendererRef.current.setAnimationLoop(() => {
+                    const deltaTime = clock.getDelta(); // Time elapsed per frame
+                    
+                    if (modelRef.current && sceneRef.current && cameraRef.current) {
+                        modelRef.current.rotation.y += 0.08 * deltaTime; 
+                        updatePosition(deltaTime); // Pass deltaTime parameter
+                        rendererRef.current!.render(sceneRef.current, cameraRef.current);
+                    }
+                });
+            }
+        };
+
         /**
          * Update position: Move the model to the right with simple wave motion.
          */
-        const updatePosition = () => {
+        const updatePosition = (deltaTime: number) => { // Accept deltaTime parameter
             if (modelRef.current && rendererRef.current) {
-                modelRef.current.position.x += 0.0035; // Adjust speed
+                modelRef.current.position.x += 0.1 * deltaTime; 
                 // Wrap left at right boundary
                 if (modelRef.current.position.x > 3) {
                     modelRef.current.position.x = -3; 
                 }
                 modelRef.current.position.y = Math.sin(modelRef.current.position.x) * 0.5;
-            }
-        };
-
-        const animate = () => {
-            if (rendererRef.current) {
-                rendererRef.current.setAnimationLoop(() => {
-                    if (modelRef.current && sceneRef.current && cameraRef.current) {
-                        modelRef.current.rotation.y += 0.0025; 
-                        updatePosition(); 
-                        rendererRef.current!.render(sceneRef.current, cameraRef.current);
-                    }
-                });
             }
         };
 

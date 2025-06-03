@@ -6,8 +6,8 @@ import React, { useState } from 'react';
 import MintedSuccessModal from './MintedSuccessModal';
 import WalletAlert from './WalletAlert';
 
-const PACKAGE_ID = `0x3e1473fb76a629fd4ac4348966f62ee30f93aa9e0da22d965bf8a7f3c02b7f51`;
-const MINT_STATE_ID = `0x5227757e15d23dca4d1114985daef482409a395cf4199754bb6ecaf8badff19c`;
+const PACKAGE_ID = `0xfba51e0bfb4e9359927b100415fdb9af59303b681e968698415c63c152e06d41`;
+const MINT_STATE_ID = `0x5b0d437f86e0a6a2340dc52f9f3b7e2db83ddba9058b7cded95f36eabec207d0`;
 
 interface MintStateFields {
     minted: number; 
@@ -56,8 +56,35 @@ function Hero() {
     const [showMintSuccessModal, setShowMintSuccessModal] = useState(false);
     const [showWalletAlert, setShowWalletAlert] = useState(false);
 
+    const nftMetadata = {
+        name: "Immersiv3 Overflow 2025",
+        description: "A 3D NFT artwork with AR experience.",
+        image_url: "https://immersiv3.tech/nft-assets/thumbnail.webp", 
+        model_url: "https://immersiv3.tech/nft-assets/nft.glb", 
+        file_size: "409 KB",
+        creator: "ImmersivΞ",
+        artist: "Artitaya",
+        copyright: "© 2025 ImmersivΞ",
+        license: "CC BY-NC 4.0",
+        keywords: ["3d art", "ar", "abstract", "particle wave"],
+        category: "art",
+        style: "abstract",
+        use_case: "ar experience",
+        technical_details: {
+            format: "GLB",
+            meshes: 900,
+            vertices: 608400,
+            faces: 1080000,
+            materials: "PBR",
+            rendered_in: "Three.js",
+            specular_map: "Grayscale texture used for specular highlights"
+        },
+        attributes: [
+            { trait_type: "Edition", value: "Prototype" }
+        ]
+    };
+
     const handleMint = () => {
-        // Check if wallet is connected
         if (!account?.address) {
             setShowWalletAlert(true);
             return;
@@ -67,13 +94,14 @@ function Hero() {
         const tx = new Transaction();
         tx.moveCall({
             package: PACKAGE_ID,
-            module: 'nft_minter',
+            module: 'nft_minter_v2',
             function: 'mint_to_sender',
             arguments: [
                 tx.object(MINT_STATE_ID), // shared object
-                tx.pure.vector('u8', [...'Immersiv3 Overflow 2025'].map(x => x.charCodeAt(0))), 
-                tx.pure.vector('u8', [...'A 3D NFT artwork with AR experience'].map(x => x.charCodeAt(0))), 
-                tx.pure.vector('u8', [...'https://immersiv3.tech/nft-assets/nft.glb'].map(x => x.charCodeAt(0))), // NOTE: Temporary dev URL — to be updated with Walrus/IPFS in production         
+                tx.pure.string(nftMetadata.name),       // name 
+                tx.pure.string(nftMetadata.description), // description
+                tx.pure.string(nftMetadata.image_url),   // image_url (thumbnail)
+                tx.pure.string(nftMetadata.model_url),   // model_url (GLB file)           
             ]
         });
         signAndExecute({
