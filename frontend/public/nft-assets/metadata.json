@@ -1,8 +1,8 @@
 {
     "name": "ImmersivΞ Overflow 2025",
     "description": "A 3D NFT artwork with AR experience.",
-    "image_url": "https://immersiv3.tech/nft-assets/nft-preview.webp",
-    "animation_url": "https://immersiv3.tech/nft-assets/nft.glb",
+    "image_url": "https://immersiv3.tech/nft-assets/thumbnail.webp",
+    "model_url": "https://immersiv3.tech/nft-assets/nft.glb",
     "file_size": "588 KB",
     "creator": "ImmersivΞ",
     "artist": "Artitaya",
@@ -14,11 +14,11 @@
     "use_case": "ar experience",
     "technical_details": {
         "format": "GLB",
-        "vertices": 1411344,
-        "faces": 2571264,
+        "meshes": 900,
+        "vertices": 608400,
+        "faces": 1080000,
         "materials": "PBR",  
         "rendered_in": "Three.js",
-        "animation_duration": "4s",
         "specular_map": "Grayscale texture used for specular highlights"
     },
     "attributes": [

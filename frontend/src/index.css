@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 section h2 {
-    margin-top: 1.5rem !important;
+    margin-top: 1rem !important;
 }
 
 .model-viewer-bg {
@@ -21,20 +21,11 @@ section h2 {
 }
 
 @layer utilities {
-    .wallet-connect-btn {
-        @apply border border-[var(--text-color)] rounded-md px-3 py-1.5 transition-all hover:bg-[var(--text-color)] hover:text-[var(--bg-color)];
-    }
-
+        
     /* Footer icon */
     .social-icon {
             @apply fill-[var(--text-color)] transition-all;
         }
-
-    /* Navbat icon */
-    nav button svg.social-icon {
-        width: 16px !important; 
-        height: 16px !important;
-    }
 }
 
 

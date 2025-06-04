@@ -5,21 +5,15 @@ import { Link } from 'react-router-dom';
  * PortalPage Component: A category page leading to an immersive VR portal experience.
  *
  * This component is part of the gallery page and serves as an entry point to the VR portal section.
- * It displays a decorative neon portal image for visual theme consistency, a VR user manual, and a button 
- * to navigate to the actual portal and 360 landscape view (currently marked as "Coming Soon").
  */
 function PortalPage() {
-    // const handleMint = () => {
-    //     console.log('Initiate NFT Mint on Sui Blockchain');
-    // };
-
     return (
         <section className="min-h-screen flex flex-col items-center text-center pt-20 pb-20">
         <div className="w-full max-w-4xl px-4">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-5 mt-16">
             ImmersivΞ Portal
             </h2>
-            <p className="text-sm sm:text-base lg:text-lg opacity-80 mb-15 md:mb-10 lg:mb-5">
+            <p className="text-sm sm:text-base lg:text-lg opacity-80 mb-12 md:mb-10 lg:mb-5">
             Step into the Portal — Experience immersive dimensions in VR
             </p>
 
@@ -28,7 +22,7 @@ function PortalPage() {
             <Link
                 to="/vr"
                 className="connect-btn px-6 py-2 border border-[var(--text-color)] rounded-md 
-                text-lg hover:bg-[var(--text-color)] hover:text-[var(--bg-color)]"
+                text-lg hover:bg-[var(--text-color)] hover:text-[var(--bg-color)] mb-5"
             >
                 Enter Portal
             </Link>
@@ -48,11 +42,7 @@ function PortalPage() {
             </div>
 
             {/* === VR user manual === */}
-            {/* <div className="w-full max-w-md p-4 mx-auto mt-8 2xl:mt-0 2xl:absolute 2xl:right-10 2xl:top-[188%] "> */}
-                            <div className="w-full max-w-md p-4 mx-auto mt-8 custom-lg:mt-0 custom-lg:absolute custom-lg:right-10 custom-lg:top-[188%] 
-                    custom-xl:right-10 custom-xl:top-[157.5%]">    
-
-
+            <div className="w-full max-w-md p-4 mx-auto mt-8 custom-lg:mt-0 custom-lg:absolute custom-lg:right-10 custom-lg:top-[188%] custom-xl:right-10 custom-xl:top-[157.5%]">    
             <div className="bg-[var(--bg-color)] text-[var(--text-color)] rounded-lg shadow-xl border border-white/30 p-4">
                 <h3 className="text-lg font-semibold mb-2">Getting Started:</h3>
                 <ul className="list-none text-sm space-y-2 leading-relaxed">
