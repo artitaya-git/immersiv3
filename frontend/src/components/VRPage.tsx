@@ -62,13 +62,23 @@ const VRPage = () => {
                 containerRef.current.innerHTML = '';
                 containerRef.current.appendChild(renderer.domElement);
 
-                const vrButton = VRButton.createButton(renderer);
-                vrButton.id = 'VRButton';
-                
-                if (isMobile) {
-                    vrButton.style.bottom = '40px'; 
-                }
-                
+            // === VR Button ===
+            const vrButton = VRButton.createButton(renderer);
+            vrButton.id = 'VRButton';
+
+            // Fixed positioning for all devices
+            vrButton.style.position = 'fixed';
+            vrButton.style.bottom = isMobile ? '30px' : '20px';
+            vrButton.style.right = '20px';
+            vrButton.style.left = 'auto';
+            vrButton.style.zIndex = '999';
+            vrButton.style.margin = '0';
+
+            if (isMobile) {
+                vrButton.style.marginBottom = '10px';
+                vrButton.style.fontSize = '13px';
+                vrButton.style.padding = '10px 16px'; 
+            }                
                 vrButtonRef.current = vrButton;
                 containerRef.current.appendChild(vrButton);
                 setIsVrButtonInitialized(true);
@@ -104,8 +114,8 @@ const VRPage = () => {
 
             function createGlowingSpheres() {
                 // Performance-optimized particle counts
-                const sphereCount = isMobile ? 150 : 300;
-                const geometry = new THREE.SphereGeometry(0.06, 16, 12);
+                const sphereCount = isMobile ? 100 : 180;
+                const geometry = new THREE.SphereGeometry(0.06, isMobile ? 18 : 20, isMobile ? 14 : 16);
                 const material = new THREE.MeshBasicMaterial({
                     color: 0x00DDFF,
                     transparent: true,

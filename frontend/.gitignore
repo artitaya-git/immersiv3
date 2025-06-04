@@ -6,10 +6,35 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-node_modules
+
+# Node dependencies
+node_modules/
 dist
 dist-ssr
 *.local
+
+# Node dependencies
+node_modules/
+yarn.lock
+
+# Build outputs
+build/
+dist/
+dist-ssr/
+out/
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+
+# Environment variables
+.env
+.env.*
+.secret
+
+# OS-specific files
+Thumbs.db
 
 # Editor directories and files
 .vscode/*
@@ -21,31 +46,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.txt
 
-# Node dependencies
-node_modules/
-package-lock.json
-yarn.lock
-
-# Build outputs
-build/
-dist/
-out/
-
-# Temporary files
-temp/
-tmp/
-*.tmp
-
-# Environment variables
-.env
-.env.*
-
-# OS-specific files
-.DS_Store
-Thumbs.db
-
-# Editor directories and settings
-.vscode/
-.idea/
-.secret
+# Local development
+*.local

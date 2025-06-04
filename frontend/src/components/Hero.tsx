@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import MintedSuccessModal from './MintedSuccessModal';
 import WalletAlert from './WalletAlert';
+import { MdViewInAr } from 'react-icons/md';
 
 const PACKAGE_ID = `0xfba51e0bfb4e9359927b100415fdb9af59303b681e968698415c63c152e06d41`;
 const MINT_STATE_ID = `0x5b0d437f86e0a6a2340dc52f9f3b7e2db83ddba9058b7cded95f36eabec207d0`;
@@ -26,7 +27,6 @@ interface MoveObjectContent {
         },
         }
     );
-
     const content = data?.data?.content as MoveObjectContent | undefined;
 
     return (
@@ -44,7 +44,7 @@ interface MoveObjectContent {
  * Hero Component: Displays the main landing section of the application.
  *
  * This component showcases the primary call to action for the user,
- * and a way to get started (e.g., minting an NFT).
+ * and a way to get started (e.g., minting an NFT, AR mode).
  */
 function Hero() {
     const { mutate: signAndExecute } = useSignAndExecuteTransaction();
@@ -55,6 +55,16 @@ function Hero() {
     const [errorMessage, setErrorMessage] = useState('');
     const [showMintSuccessModal, setShowMintSuccessModal] = useState(false);
     const [showWalletAlert, setShowWalletAlert] = useState(false);
+
+    const detectDevice = () => {
+        const userAgent = navigator.userAgent.toLowerCase();
+        return {
+            isIOS: /iphone|ipad|ipod/.test(userAgent),
+            isAndroid: /android/.test(userAgent),
+            isMobile: /mobile|tablet|ipad|iphone|android/.test(userAgent)
+        };
+    };
+    const device = detectDevice(); 
 
     const nftMetadata = {
         name: "Immersiv3 Overflow 2025",
@@ -110,12 +120,10 @@ function Hero() {
             onSuccess: () => {
                 console.log('Minting transaction successful!');
                 setShowMintSuccessModal(true);
-
             },
             // onError callback 
             onError: (error) => {
-                console.error('Minting transaction failed:', error);
-                // Check error if gas is sufficient                
+                console.error('Minting transaction failed:', error);          
                 let message = 'Transaction failed. Please try again.';
                 if (error.message.includes('Insufficient gas')) { 
                     message = 'Insufficient gas. Please top up your SUI balance.';
@@ -128,12 +136,11 @@ function Hero() {
                 }
 
                 setErrorMessage(message);
-                setShowErrorModal(true); // Show Modal Error
+                setShowErrorModal(true); 
             }
         });
     };
 
-    // Close Modal
     const closeErrorModal = () => {
         setShowErrorModal(false);
         setErrorMessage('');
@@ -164,27 +171,26 @@ function Hero() {
                 <p className="text-sm sm:text-base lg:text-lg opacity-80 mb-10">
                     Bring Digital Art to Life — Discover immersive AR experiences.
                 </p>
-
-                {/* === Enter AR Button === */}
+                {/* === Enter AR Button for Android === */}
                 <div className="flex justify-center space-x-7">
                     <Link
                         to="/ar-rotate"
                         className="connect-btn px-6 py-2 border border-[var(--text-color)] rounded-md 
                         text-lg hover:bg-[var(--text-color)] hover:text-[var(--bg-color)] mb-1"
                     >
-                        Enter AR
+                        {device.isAndroid ? 'Enter AR [Android]' : 'Enter AR'}
                     </Link>
                 </div>
             </div>
-            <div className="w-full max-w-6xl px-4 flex-1 flex flex-col items-center justify-center">
-                
+
+            <div className="w-full max-w-6xl px-4 flex-1 flex flex-col items-center justify-center">                
                 {/* === Google Model-viewer === */}
                 <div className="flex flex-col items-center mb-8">
                     <model-viewer
                         className="w-[350px] md:w-[450px] lg:w-[500px] xl:w-[600px] 
                         h-[350px] md:h-[450px] lg:h-[500px] xl:h-[600px] 
                         rounded-lg model-viewer-bg mb-5"
-                        src="/nft-assets/nft.glb" // LOCAL: dev use only — for production, switch to Walrus/IPFS 
+                        src="/nft-assets/nft.glb"
                         alt="3D NFT"
                         camera-controls
                         auto-rotate
@@ -192,6 +198,12 @@ function Hero() {
                         touch-action="pan-y"
                         tone-mapping="commerce"
                         shadow-intensity="0.8"
+                        ios-src="/nft-assets/nft.usdz"
+                        ar
+                        ar-modes="webxr scene-viewer quick-look"
+                        ar-scale="auto"
+                        environment-image="neutral"
+                        seamless-poster
                     />
 
                     {/* === Free Mint Button === */}
@@ -205,32 +217,41 @@ function Hero() {
                     <NumberMinted />
                 </div>
 
-                {/* Quick Tips - Below Model */}
+                {/* Quick Tips */}
                 <div className="w-full max-w-md">
                     <div className="bg-[var(--bg-color)] text-[var(--text-color)] rounded-lg shadow-xl border border-white/30 p-4">
                         <h3 className="text-lg font-semibold mb-2">Quick Tips:</h3>
                         <ul className="list-none text-sm space-y-2">
                             <li>
                                 <span className="font-semibold">Rotate 3D:</span> Click & drag (desktop) or swipe (mobile).<br />
-                                <span className="font-semibold">Zoom 3D:</span> Scroll mouse wheel (desktop) or pinch (mobile).
-                            </li>
+                                <span className="font-semibold">Zoom 3D:</span> Scroll mouse (desktop) or pinch (mobile).
+                            </li>                            
                             <li className="my-4">
-                                <span className="text-lg font-semibold block mb-2">Enter AR:</span>
+                                <span className="text-lg font-semibold block mb-2">View in AR:</span>
                                 <ul className="list-none ml-4 space-y-1">
                                     <li>
-                                        Tap the <span className="font-semibold">[Enter AR]</span> button to view the object in your real-world space.
+                                        <span className="font-semibold">
+                                            <MdViewInAr className="inline-block align-middle mr-1" />
+                                            AR Button:
+                                        </span> Look for the white cube (AR) icon above to view in your space (mobile only)
+                                    </li>
+                                    <li>
+                                        <span className="font-semibold">[Enter AR] :</span> Button specifically for Android devices.
                                     </li>
                                 </ul>
-                            </li>
+                            </li>                            
                             <li className="my-4">
-                                <span className="text-lg font-semibold block mb-2">AR Compatibility:</span>
+                                <span className="text-lg font-semibold block mb-2">Device Support:</span>
                                 <ul className="list-none ml-4 space-y-1">
-                                    <li><span className="font-semibold">Best on:</span> Android (Chrome, etc.)</li>
-                                    <li><span className="font-semibold">NOT Supported:</span> Desktop, iPhone.</li>
+                                    <li><span className="font-semibol">Android:</span> Chrome recommended (WebXR)</li>
+                                    <li><span className="font-semibol">iPhone/iPad:</span> iOS 12+ (Quick Look)</li>
+                                    <li><span className="font-semibol">Desktop:</span> 3D view only • AR requires mobile</li><br />
+                                    <li><span className="font-semibold">Best Experience: Try on your phone or tablet!</span></li>
                                 </ul>
                             </li>
                         </ul>
                     </div>
+                    
                 </div>
             </div>
 
@@ -240,7 +261,6 @@ function Hero() {
                 onClose={() => setShowWalletAlert(false)}
                 onConnectWallet={handleConnectWallet}
             />
-
             <MintedSuccessModal 
                 show={showMintSuccessModal}
                 onClose={closeMintSuccessModal}

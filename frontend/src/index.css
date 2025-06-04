@@ -21,8 +21,6 @@ section h2 {
 }
 
 @layer utilities {
-        
-    /* Footer icon */
     .social-icon {
             @apply fill-[var(--text-color)] transition-all;
         }

@@ -55,8 +55,8 @@ function PortalPage() {
                     <ul className="list-none ml-4 space-y-1 leading-relaxed">
                     <li>Tap <span className="font-semibold">[Enter VR]</span> inside.</li>
                     <li>Use a VR headset or phone with Cardboard for full view.</li>
-                    <li>Without VR, a 360° view works on mobile and desktop.</li>
-                    <li><span className="font-semibold">NOTE:</span> VR not supported on desktop.</li>
+                    <li>Without VR, a 360° view works on mobile and desktop.</li><br />
+                    <li><span className="font-semibold">NOTE: VR not supported on desktop.</span></li>
                     </ul>
                 </li>
                 </ul>

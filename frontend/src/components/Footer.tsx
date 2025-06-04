@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaDiscord, FaTwitter, FaTelegram, FaYoutube, FaVimeo } from 'react-icons/fa';
+import { FaDiscord, FaTwitter, FaTelegram, FaYoutube, FaVimeo, FaGithub } from 'react-icons/fa';
 
 /**
  * Footer Component: Displays the footer section of the website.
@@ -33,6 +33,13 @@ function Footer() {
                     opacity-70 hover:opacity-100 transition-all hover:scale-105"
                 >
                     <FaTelegram className="w-5 h-5 social-icon" />
+                </a>
+                <a
+                    href="#"
+                    className="flex items-center justify-center text-sm hover:text-[var(--text-color)] 
+                    opacity-70 hover:opacity-100 transition-all hover:scale-105"
+                >
+                    <FaGithub className="w-5 h-5 social-icon" />
                 </a>
                 <a
                     href="#"
