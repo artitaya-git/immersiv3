@@ -208,7 +208,7 @@ function Hero() {
                         // ios-src="/nft-assets/nft.usdz"
 
                         // Try 2
-                        ios-src="/nft-assets/teapot.usdz"
+                        ios-src="/nft-assets/nft.usdz"
 
                         // Try 3- delete all ios-src 
 
@@ -234,7 +234,6 @@ function Hero() {
                     touch-action="pan-y" 
                     alt="A 3D NFT artwork with AR experience." 
                     shadow-intensity="2" 
-                    // skybox-image="../../shared-assets/environments/spruit_sunrise_1k_HDR.jpg" 
                     skybox-height="2m" 
                     max-camera-orbit="auto 90deg auto" 
                     ios-src="/nft-assets/teapot.usdz" 
