@@ -217,7 +217,7 @@ function Hero() {
                         ar-scale="auto"
                         environment-image="neutral"
                         seamless-poster
-                        poster="/nft-assets/thumbnail.webp"
+                
 
                         interaction-policy="always-allow"
                     />
