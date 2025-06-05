@@ -222,6 +222,32 @@ function Hero() {
                         interaction-policy="always-allow"
                     />
 
+                    <model-viewer 
+                    className="w-[350px] md:w-[450px] lg:w-[500px] xl:w-[600px] 
+                    h-[350px] md:h-[450px] lg:h-[500px] xl:h-[600px] 
+                    rounded-lg model-viewer-bg mb-5"
+                    src="/nft-assets/nft.glb" 
+                    ar 
+                    ar-scale="fixed" 
+                    camera-controls 
+                    auto-rotate
+                    touch-action="pan-y" 
+                    alt="A 3D NFT artwork with AR experience." 
+                    shadow-intensity="2" 
+                    // skybox-image="../../shared-assets/environments/spruit_sunrise_1k_HDR.jpg" 
+                    skybox-height="2m" 
+                    max-camera-orbit="auto 90deg auto" 
+                    ios-src="/nft-assets/teapot.usdz" 
+                    tone-mapping="commerce"
+                    xr-environment
+                    >
+                    </model-viewer>
+
+
+
+
+
+
                     {/* === Free Mint Button === */}
                     <button
                         onClick={handleMint}
