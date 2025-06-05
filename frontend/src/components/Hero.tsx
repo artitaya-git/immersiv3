@@ -196,14 +196,30 @@ function Hero() {
                         auto-rotate
                         loading="eager"
                         touch-action="pan-y"
+                        disable-pan={false}  
+                        disable-zoom={false}
+    
+                        field-of-view="30deg"                 
+
                         tone-mapping="commerce"
                         shadow-intensity="0.8"
-                        ios-src="/nft-assets/nft.usdz"
+
+                        // Try 1
+                        // ios-src="/nft-assets/nft.usdz"
+
+                        // Try 2
+                        ios-src="/nft-assets/teapot.usdz"
+
+                        // Try 3- delete all ios-src 
+
                         ar
                         ar-modes="webxr scene-viewer quick-look"
                         ar-scale="auto"
                         environment-image="neutral"
                         seamless-poster
+                        poster="/nft-assets/thumbnail.webp"
+
+                        interaction-policy="always-allow"
                     />
 
                     {/* === Free Mint Button === */}
