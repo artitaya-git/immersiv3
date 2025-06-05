@@ -21,8 +21,8 @@ function PortalPage() {
             <div className="flex justify-center space-x-7 mb-5 mt-5 md:mt-10 lg:mt-15">
             <Link
                 to="/vr"
-                className="connect-btn px-6 py-2 border border-[var(--text-color)] rounded-md 
-                text-lg hover:bg-[var(--text-color)] hover:text-[var(--bg-color)] mb-5"
+                className="connect-btn px-6 py-2 sm:px-4 sm:py-1 border border-[var(--text-color)] rounded-md 
+                text-lg sm:text-base hover:bg-[var(--text-color)] hover:text-[var(--bg-color)] mb-5"
             >
                 Enter Portal
             </Link>

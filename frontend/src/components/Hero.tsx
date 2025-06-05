@@ -175,10 +175,10 @@ function Hero() {
                 <div className="flex justify-center space-x-7">
                     <Link
                         to="/ar-rotate"
-                        className="connect-btn px-6 py-2 border border-[var(--text-color)] rounded-md 
-                        text-lg hover:bg-[var(--text-color)] hover:text-[var(--bg-color)] mb-1"
+                        className="connect-btn px-6 py-2 sm:px-4 sm:py-1 border border-[var(--text-color)] rounded-md 
+                        text-lg sm:text-base hover:bg-[var(--text-color)] hover:text-[var(--bg-color)] mb-1"
                     >
-                        {device.isAndroid ? 'Enter AR [Android]' : 'Enter AR'}
+                        Enter AR
                     </Link>
                 </div>
             </div>
@@ -208,17 +208,20 @@ function Hero() {
                         // ios-src="/nft-assets/nft.usdz"
 
                         // Try 2
-                        ios-src="/nft-assets/test-convert.usdz"
+                        // ios-src="/nft-assets/test-convert.usdz"
 
                         // Try 3- delete all ios-src 
 
                         ar
-                        ar-modes="webxr scene-viewer quick-look"
+                        // ar-modes="webxr scene-viewer quick-look"
+                        ar-modes="quick-look"
+                        // ar-modes="webxr quick-look"
+                        // ar-modes="scene-viewer quick-look"
+
+
                         ar-scale="auto"
                         environment-image="neutral"
-                        seamless-poster
-                
-
+                        seamless-poster               
                         interaction-policy="always-allow"
                     />
 
@@ -226,17 +229,18 @@ function Hero() {
                     className="w-[350px] md:w-[450px] lg:w-[500px] xl:w-[600px] 
                     h-[350px] md:h-[450px] lg:h-[500px] xl:h-[600px] 
                     rounded-lg model-viewer-bg mb-5"
-                    src="/nft-assets/nft.glb" 
+                    src="/nft-assets/nft.gltf" 
                     ar 
+                    ar-modes="quick-look"
                     ar-scale="fixed" 
                     camera-controls 
                     auto-rotate
                     touch-action="pan-y" 
-                    alt="A 3D NFT artwork with AR experience." 
+                    alt="A 3D model example from Apple" 
                     shadow-intensity="2" 
                     skybox-height="2m" 
                     max-camera-orbit="auto 90deg auto" 
-                    ios-src="/nft-assets/teapot.usdz" 
+                    // ios-src="/nft-assets/teapot.usdz" 
                     tone-mapping="commerce"
                     xr-environment
                     >
@@ -250,8 +254,8 @@ function Hero() {
                     {/* === Free Mint Button === */}
                     <button
                         onClick={handleMint}
-                        className="connect-btn px-5 py-2 border border-[var(--text-color)] rounded-md 
-                        text-lg hover:bg-[var(--text-color)] hover:text-[var(--bg-color)]"
+                        className="connect-btn px-5 py-2 sm:px-4 sm:py-1 border border-[var(--text-color)] rounded-md 
+                        text-lg sm:text-base hover:bg-[var(--text-color)] hover:text-[var(--bg-color)]"
                     >
                         Free Mint Now
                     </button>

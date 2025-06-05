@@ -168,12 +168,12 @@ function LandingPage() {
       />
       {/* === Overlay Content === */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center pt-6 md:pt-16 text-[#f1f1f1]">  
-          <h1 ref={logoRef} className="text-3xl md:text-5xl lg:text-7xl font-bold mb-2">
+          <h1 ref={logoRef} className="text-3xl md:text-6xl lg:text-7xl font-bold mb-2">
                     ImmersivΞ
                 </h1>
                 <p
                     ref={slogan1Ref}
-                    className="text-base md:text-2xl lg:text-4xl font-semibold leading-snug max-w-5xl 
+                    className="text-base md:text-3xl lg:text-4xl font-semibold leading-snug max-w-5xl 
                     mx-auto px-4 whitespace-pre-wrap text-[#b2b2b2]"
                 >
                     <span className="block">Where imagination shapes reality</span>
