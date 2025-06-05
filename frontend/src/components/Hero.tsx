@@ -208,7 +208,7 @@ function Hero() {
                         // ios-src="/nft-assets/nft.usdz"
 
                         // Try 2
-                        ios-src="/nft-assets/nft.usdz"
+                        ios-src="/nft-assets/test-convert.usdz"
 
                         // Try 3- delete all ios-src 
 
