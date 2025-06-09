@@ -1,4 +1,4 @@
-## ImmersivΞ: WebXR Digital Art Gallery
+## ImmersivΞ: Web-based XR Digital Art Gallery
 
 *Sui Overflow 2025 Hackathon Project*
 
@@ -25,7 +25,7 @@
 
 ### Tech Stack
 * **Frontend:**
-    * **XR / 3D:** Three.js, WebXR, WebGL
+    * **XR / 3D:** Three.js, WebXR, WebGL, `@google/model-viewer`
     * **Core:** React, Tailwind CSS, GSAP, Vite, TypeScript
     * **Sui Integration:** `@mysten/dapp-kit`, `@mysten/sui`
 * **Smart Contract (Sui Move):** Basic **NFT minting smart contract** for a limited supply (1111 pieces).
@@ -33,9 +33,9 @@
 ---
 
 ### Local Development
-1.  **Clone:** `git clone "https://github.com/artitaya-git/immersiv3.git" && cd immersiv3`
-2.  **Install:** `npm install`
-3.  **Run Dev Server:** `npm run dev`
+1. **Clone:** `git clone "https://github.com/artitaya-git/immersiv3.git" && cd immersiv3`
+2. **Install:** `npm install`
+3. **Run Dev Server:** `npm run dev`
 
 *Optional for Sui Move Contract:*
 * **Build:** `sui move build`

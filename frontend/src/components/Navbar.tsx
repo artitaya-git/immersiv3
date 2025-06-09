@@ -46,8 +46,8 @@ function Navbar({ isLanding }: NavbarProps) {
                 replace: true,
                 state: { scrollTo: section } 
             });
-        } else {
-           navigate(path, { replace: true });
+        } else { 
+            navigate(path, { replace: true });
         }
     };
 
@@ -65,7 +65,7 @@ function Navbar({ isLanding }: NavbarProps) {
         <>
         {/* Logo */}
         <nav
-        className={`flex justify-between items-center w-full top-0 z-50 px-4 py-2 ${
+        className={`flex justify-between items-center w-full top-0 z-50 px-2 py-2 ${
             isLanding
             ? 'absolute text-[#f1f1f1] bg-transparent'
             : 'fixed bg-[var(--bg-color)] text-[var(--text-color)] border-b border-[var(--text-color)] border-opacity-30'
@@ -74,7 +74,7 @@ function Navbar({ isLanding }: NavbarProps) {
         <h1 onClick={handleLogoClick} className="text-lg font-bold cursor-pointer">
             ImmersivΞ
         </h1>
-        <div className="flex items-center space-x-2 sm:space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-3">
             {isLanding ? (
             <>
                 {/* Icon - Audio On/Off */}
@@ -105,11 +105,27 @@ function Navbar({ isLanding }: NavbarProps) {
 
                 {/* === Wallet Connect Button === */}
                 <ConnectButton
-                className="wallet-connect-btn bg-[#F1F1F1] text-[#000000] px-2 py-1 text-[12px] sm:px-3 sm:py-1.5 sm:text-xs md:px-4 md:py-2 md:text-sm lg:text-base min-w-[100px] max-w-[120px] sm:max-w-[140px] md:max-w-[168px] lg:max-w-[189px] whitespace-nowrap border-2 shadow-sm hover:shadow-lg hover:scale-104 active:scale-95"
-                connectText="Connect Wallet"
-                />
+                    className="wallet-connect-btn bg-[#F1F1F1] text-[#000000] 
+                        px-2 py-1 
+                        sm:px-3 sm:py-1.5 
+                        md:px-4 md:py-2 
+                        min-w-[80px] max-w-[100px] 
+                        sm:max-w-[140px] 
+                        md:max-w-[168px] 
+                        lg:max-w-[189px] 
+                        whitespace-nowrap border-2 shadow-sm 
+                        hover:shadow-lg hover:scale-104 active:scale-95"
+                    connectText="Connect Wallet"
+                    style={{
+                        fontSize: window.innerWidth < 640 ? '12px' : 
+                                window.innerWidth < 768 ? '13px' : 
+                                window.innerWidth < 1024 ? '15px' : '17px'
+                    }}
+                    />
                 {address && (
-                    <span className="text-[10px] sm:text-xs max-w-[80px] sm:max-w-[100px] truncate ml-1">
+                    <span className="text-[8px] sm:text-[9px] md:text-[10px] 
+                                max-w-[60px] sm:max-w-[80px] md:max-w-[100px] 
+                                truncate ml-1">
                     {address.slice(0, 4)}...{address.slice(-3)}
                 </span>
                 )}
@@ -143,7 +159,7 @@ function Navbar({ isLanding }: NavbarProps) {
         )}
         </nav>
 
-        {/* Menu Overlay */}
+        {/* === Menu Overlay === */}
         {showMenu && (
             <div className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm">
                 <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#000000] 
