@@ -93,13 +93,13 @@ const VRPage = () => {
             hemiLight.position.set(0, 20, 0);
             scene.add(hemiLight);
 
-            // Load 360° panoramic texture
+            // === Load 360° panoramic texture ===
             const texturePath = '/media/tunnel.webp';
             const textureLoader = new THREE.TextureLoader();
             textureLoader.load(texturePath, (texture) => {
                 texture.colorSpace = THREE.SRGBColorSpace;
 
-                // Create inverted sphere for 360° viewing from inside
+                // === Create inverted sphere for 360° viewing from inside ===
                 const sphereGeometry = new THREE.SphereGeometry(50, 60, 40);
                 sphereGeometry.scale(-1, 1, 1);
                 const sphereMaterial = new THREE.MeshBasicMaterial({ map: texture });

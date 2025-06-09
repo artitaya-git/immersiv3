@@ -3,7 +3,7 @@
     "description": "A 3D NFT artwork with AR experience.",
     "image_url": "https://immersiv3.tech/nft-assets/thumbnail.webp",
     "model_url": "https://immersiv3.tech/nft-assets/nft.glb",
-    "file_size": "588 KB",
+    "file_size": "9.7 MB",
     "creator": "ImmersivΞ",
     "artist": "Artitaya",
     "copyright": "© 2025 ImmersivΞ",
@@ -14,14 +14,14 @@
     "use_case": "ar experience",
     "technical_details": {
         "format": "GLB",
-        "meshes": 900,
-        "vertices": 608400,
-        "faces": 1080000,
-        "materials": "PBR",  
-        "rendered_in": "Three.js",
-        "specular_map": "Grayscale texture used for specular highlights"
+        "meshes": 2,
+        "vertices": 161113,
+        "faces": 256610,
+        "materials": "PBR (Vertex Colors)",  
+        "rendered_in": "Three.js"
     },
     "attributes": [
-        { "trait_type": "Edition", "value": "Prototype" }
+        { "trait_type": "Edition", "value": "Prototype" },
+        { "trait_type": "Wave Form", "value": "Static" }
     ]
 }
