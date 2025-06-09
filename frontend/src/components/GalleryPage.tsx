@@ -9,7 +9,6 @@ import FAQ from './FAQ';
 import Footer from './Footer';
 import Navbar from './Navbar';
 
-
 /**
  * GalleryPage Component: The main page for the ImmersivΞ gallery.
  */
@@ -58,7 +57,7 @@ function GalleryPage() {
     });
   }, [location]);
 
-  // === Essential Mobile Protection + Orientation Fix ===
+  // === Enhanced Mobile Protection + AR Icon Fixed ===
   useEffect(() => {
     // Prevent horizontal scroll
     document.body.style.overflowX = 'hidden';
@@ -68,23 +67,23 @@ function GalleryPage() {
     document.body.style.overscrollBehavior = 'none';
     document.documentElement.style.overscrollBehavior = 'none';
     
-    // Prevent unwanted touch behaviors (iOS)
+    // Prevent unwanted touch behaviors (iOS) - && keep AR interaction
     (document.body.style as any).webkitUserSelect = 'none';
     (document.body.style as any).webkitTouchCallout = 'none';
     (document.body.style as any).webkitTapHighlightColor = 'transparent';
 
-    // Fix orientation change scaling
+    // AR viewport configuration
     const handleOrientationChange = () => {
       setTimeout(() => {
-
         let viewport = document.querySelector('meta[name="viewport"]');
         if (!viewport) {
           viewport = document.createElement('meta');
           viewport.setAttribute('name', 'viewport');
           document.head.appendChild(viewport);
         }
+        
         viewport.setAttribute('content', 
-          'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+          'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=auto'
         );
         
         // Force layout recalculation
@@ -92,17 +91,31 @@ function GalleryPage() {
       }, 100);
     };
 
+    // Initial viewport setup
+    handleOrientationChange();
+
     window.addEventListener('orientationchange', handleOrientationChange);
 
-    // Prevent pinch-to-zoom and horizontal swipes
+    // Selective touch prevention (avoid blocking AR interactions)
     const handleTouchMove = (e: TouchEvent) => {
-      // Prevent pinch-to-zoom (multi-touch)
+      // Check if touch is on model-viewer or AR elements
+      const target = e.target as HTMLElement;
+      const isARElement = target.closest('model-viewer') || 
+                          target.closest('[slot="ar-button"]') ||
+                          target.closest('#ar-button') ||
+                          target.id === 'ar-button';
+      
+      if (isARElement) {
+        return;
+      }
+      
+      // Prevent pinch-to-zoom (multi-touch) outside AR
       if (e.touches.length > 1) {
         e.preventDefault();
         return;
       }
       
-      // Prevent horizontal swipes near edges
+      // Prevent horizontal swipes near edges (not AR areas)
       const touch = e.touches[0];
       const edgeThreshold = window.innerWidth * 0.05;
       
@@ -111,8 +124,19 @@ function GalleryPage() {
       }
     };
 
-    // Prevent double-tap zoom
+    // Selective double-tap prevention
     const handleTouchEnd = (e: TouchEvent) => {
+      const target = e.target as HTMLElement;
+      const isARElement = target.closest('model-viewer') || 
+                          target.closest('[slot="ar-button"]') ||
+                          target.closest('#ar-button') ||
+                          target.id === 'ar-button';
+      
+      // Don't prevent double-tap on AR elements
+      if (isARElement) {
+        return;
+      }
+      
       const now = Date.now();
       const timeSince = now - (window as any).lastTouchEnd;
       
@@ -125,6 +149,30 @@ function GalleryPage() {
 
     document.addEventListener('touchmove', handleTouchMove, { passive: false });
     document.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+    // Ensure AR buttons are always visible
+    const ensureARButtonVisibility = () => {
+      const arButtons = document.querySelectorAll('#ar-button');
+      arButtons.forEach(button => {
+        const htmlButton = button as HTMLElement;
+        if (htmlButton) {
+          // Force AR button to be within viewport
+          htmlButton.style.position = 'absolute';
+          htmlButton.style.zIndex = '1000';
+          
+          // Check if button is outside viewport
+          const rect = htmlButton.getBoundingClientRect();
+          const viewportHeight = window.innerHeight;
+          
+          if (rect.top < 0 || rect.bottom > viewportHeight) {
+            // Adjust button position
+            htmlButton.style.bottom = '20px';
+            htmlButton.style.top = 'auto';
+          }
+        }
+      });
+    };
+    const visibilityInterval = setInterval(ensureARButtonVisibility, 1000);
 
     // Cleanup
     return () => {
@@ -139,6 +187,7 @@ function GalleryPage() {
       window.removeEventListener('orientationchange', handleOrientationChange);
       document.removeEventListener('touchmove', handleTouchMove);
       document.removeEventListener('touchend', handleTouchEnd);
+      clearInterval(visibilityInterval);
     };
   }, []);
 
@@ -148,7 +197,9 @@ function GalleryPage() {
       className="relative w-full min-h-screen overflow-x-hidden"
       style={{
         overscrollBehavior: 'none',
-        WebkitOverflowScrolling: 'touch'
+        WebkitOverflowScrolling: 'touch',
+        paddingTop: 'env(safe-area-inset-top)',
+        paddingBottom: 'env(safe-area-inset-bottom)'
       }}
     >
       <Navbar
